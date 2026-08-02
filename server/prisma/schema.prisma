@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  products    Product[]
+  createdAt   DateTime  @default(now())
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  image       String?       @db.Text
+  categoryId  Int
+  category    Category      @relation(fields: [categoryId], references: [id])
+  description String?       @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  stock       Int           @default(0)
+  status      ProductStatus @default(Active)
+  orderItems  OrderItem[]
+  createdAt   DateTime      @default(now())
+}
+
+enum ProductStatus {
+  Active
+  Inactive
+  Out_of_Stock
+}
+
+model Order {
+  id            String      @id
+  customerName  String      @db.VarChar(255)
+  email         String      @db.VarChar(255)
+  phone         String      @db.VarChar(20)
+  address       String      @db.Text
+  subtotal      Decimal     @db.Decimal(10, 2)
+  total         Decimal     @db.Decimal(10, 2)
+  paymentMethod String      @db.VarChar(50)
+  status        OrderStatus @default(Pending)
+  notes         String?     @db.Text
+  orderDate     DateTime
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+}
+
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id])
+  productId   Int
+  product     Product @relation(fields: [productId], references: [id])
+  productName String  @db.VarChar(255)
+  price       Decimal @db.Decimal(10, 2)
+  quantity    Int
+}
+
+enum OrderStatus {
+  Pending
+  Confirmed
+  Preparing
+  Shipped
+  Completed
+  Cancelled
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+}
