@@ -1,0 +1,31 @@
+meta {
+  name: Create Product
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/products
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Test Product",
+    "image": "https://via.placeholder.com/400",
+    "categoryId": 1,
+    "description": "A test product created via Bruno",
+    "price": 999,
+    "stock": 10,
+    "status": "Active"
+  }
+}
+
+vars:pre-request {
+  base_url: 
+}

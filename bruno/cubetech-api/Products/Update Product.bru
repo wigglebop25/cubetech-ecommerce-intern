@@ -1,0 +1,26 @@
+meta {
+  name: Update Product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/api/products/1
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "price": 599,
+    "stock": 25
+  }
+}
+
+vars:pre-request {
+  base_url: 
+}

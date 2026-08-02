@@ -1,0 +1,19 @@
+meta {
+  name: Get All Customers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/customers
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  base_url: 
+}

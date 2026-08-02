@@ -1,0 +1,40 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customerName": "Test Customer",
+    "email": "test@email.com",
+    "phone": "09171234567",
+    "address": "123 Test Street, Test City",
+    "items": [
+      {
+        "productId": 1,
+        "name": "Classic White T-Shirt",
+        "price": 499,
+        "quantity": 2
+      }
+    ],
+    "subtotal": 998,
+    "total": 998,
+    "paymentMethod": "Cash on Delivery",
+    "notes": "Test order via Bruno"
+  }
+}
+
+vars:pre-request {
+  base_url: 
+}
