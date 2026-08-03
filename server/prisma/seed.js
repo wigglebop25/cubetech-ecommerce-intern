@@ -1,5 +1,7 @@
 const { prisma } = require('../src/db');
 const argon2 = require('argon2');
+const { getProductImages } = require('../src/services/imageService');
+require('dotenv').config();
 
 async function main() {
   console.log('Seeding database...');
@@ -24,146 +26,78 @@ async function main() {
 
   console.log('Created 5 categories');
 
-  // Seed products with correct category IDs
-  const products = await Promise.all([
-    prisma.product.create({
-      data: {
-        name: 'Classic White T-Shirt',
-        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
-        categoryId: clothing.id,
-        description: 'A comfortable everyday t-shirt made from 100% cotton. Perfect for casual outings and layering.',
-        price: 499,
-        stock: 50,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Denim Jacket',
-        image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=400',
-        categoryId: clothing.id,
-        description: 'Classic denim jacket with a modern fit. Features button closure and chest pockets.',
-        price: 1299,
-        stock: 25,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Running Shoes',
-        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
-        categoryId: footwear.id,
-        description: 'Lightweight running shoes with responsive cushioning. Ideal for daily runs and workouts.',
-        price: 2499,
-        stock: 30,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Leather Wallet',
-        image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400',
-        categoryId: accessories.id,
-        description: 'Genuine leather wallet with multiple card slots and bill compartment. Slim and durable.',
-        price: 799,
-        stock: 40,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Wireless Earbuds',
-        image: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400',
-        categoryId: electronics.id,
-        description: 'Bluetooth earbuds with noise cancellation and 8-hour battery life. Includes charging case.',
-        price: 1599,
-        stock: 15,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Smartwatch',
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400',
-        categoryId: electronics.id,
-        description: 'Fitness tracker and smartwatch with heart rate monitor, GPS, and water resistance.',
-        price: 3499,
-        stock: 10,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Canvas Backpack',
-        image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400',
-        categoryId: bags.id,
-        description: 'Durable canvas backpack with laptop compartment. Great for school, work, or travel.',
-        price: 999,
-        stock: 20,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Sunglasses',
-        image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400',
-        categoryId: accessories.id,
-        description: 'UV400 protection sunglasses with polarized lenses. Lightweight and stylish.',
-        price: 699,
-        stock: 35,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Sports Shorts',
-        image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400',
-        categoryId: clothing.id,
-        description: 'Breathable sports shorts with quick-dry fabric. Perfect for gym and outdoor activities.',
-        price: 399,
-        stock: 0,
-        status: 'Out_of_Stock'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Formal Shoes',
-        image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400',
-        categoryId: footwear.id,
-        description: 'Classic leather formal shoes. Comfortable for all-day wear at office or events.',
-        price: 1899,
-        stock: 8,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Phone Case',
-        image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400',
-        categoryId: electronics.id,
-        description: 'Shock-absorbing phone case with slim profile. Available for most phone models.',
-        price: 299,
-        stock: 100,
-        status: 'Active'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Baseball Cap',
-        image: 'https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=400',
-        categoryId: accessories.id,
-        description: 'Adjustable baseball cap with embroidered design. One size fits most.',
-        price: 349,
-        stock: 45,
-        status: 'Inactive'
-      }
-    }),
-  ]);
-  console.log(`Created ${products.length} products`);
+  // Define product data
+  const productData = [
+    { name: 'Classic White T-Shirt', category: clothing, description: 'A comfortable everyday t-shirt made from 100% cotton. Perfect for casual outings and layering.', price: 499, stock: 50, status: 'Active' },
+    { name: 'Denim Jacket', category: clothing, description: 'Classic denim jacket with a modern fit. Features button closure and chest pockets.', price: 1299, stock: 25, status: 'Active' },
+    { name: 'Running Shoes', category: footwear, description: 'Lightweight running shoes with responsive cushioning. Ideal for daily runs and workouts.', price: 2499, stock: 30, status: 'Active' },
+    { name: 'Leather Wallet', category: accessories, description: 'Genuine leather wallet with multiple card slots and bill compartment. Slim and durable.', price: 799, stock: 40, status: 'Active' },
+    { name: 'Wireless Earbuds', category: electronics, description: 'Bluetooth earbuds with noise cancellation and 8-hour battery life. Includes charging case.', price: 1599, stock: 15, status: 'Active' },
+    { name: 'Smartwatch', category: electronics, description: 'Fitness tracker and smartwatch with heart rate monitor, GPS, and water resistance.', price: 3499, stock: 10, status: 'Active' },
+    { name: 'Canvas Backpack', category: bags, description: 'Durable canvas backpack with laptop compartment. Great for school, work, or travel.', price: 999, stock: 20, status: 'Active' },
+    { name: 'Sunglasses', category: accessories, description: 'UV400 protection sunglasses with polarized lenses. Lightweight and stylish.', price: 699, stock: 35, status: 'Active' },
+    { name: 'Sports Shorts', category: clothing, description: 'Breathable sports shorts with quick-dry fabric. Perfect for gym and outdoor activities.', price: 399, stock: 0, status: 'Out_of_Stock' },
+    { name: 'Formal Shoes', category: footwear, description: 'Classic leather formal shoes. Comfortable for all-day wear at office or events.', price: 1899, stock: 8, status: 'Active' },
+    { name: 'Phone Case', category: electronics, description: 'Shock-absorbing phone case with slim profile. Available for most phone models.', price: 299, stock: 100, status: 'Active' },
+    { name: 'Baseball Cap', category: accessories, description: 'Adjustable baseball cap with embroidered design. One size fits most.', price: 349, stock: 45, status: 'Inactive' },
+    // Additional products
+    { name: 'Polo Shirt', category: clothing, description: 'Classic polo shirt with collar and button placket. Perfect for smart casual occasions.', price: 599, stock: 40, status: 'Active' },
+    { name: 'Cargo Pants', category: clothing, description: 'Comfortable cargo pants with multiple pockets. Great for outdoor activities.', price: 899, stock: 30, status: 'Active' },
+    { name: 'Hoodie', category: clothing, description: 'Warm and cozy hoodie with kangaroo pocket. Perfect for casual wear.', price: 1099, stock: 20, status: 'Active' },
+    { name: 'Linen Shirt', category: clothing, description: 'Breathable linen shirt for summer. Lightweight and comfortable.', price: 799, stock: 25, status: 'Active' },
+    { name: 'Jogger Pants', category: clothing, description: 'Elastic waist jogger pants with tapered fit. Ideal for workouts and casual wear.', price: 699, stock: 35, status: 'Active' },
+    { name: 'Winter Jacket', category: clothing, description: 'Insulated winter jacket with hood. Keeps you warm in cold weather.', price: 2199, stock: 12, status: 'Active' },
+    { name: 'Graphic T-Shirt', category: clothing, description: 'Cotton t-shirt with unique graphic print. Express your style.', price: 549, stock: 0, status: 'Out_of_Stock' },
+    { name: 'Running Socks', category: clothing, description: 'Moisture-wicking running socks with cushioned sole. Pack of 3 pairs.', price: 149, stock: 200, status: 'Active' },
+    { name: 'Sneakers', category: footwear, description: 'Casual sneakers with comfortable sole. Perfect for everyday wear.', price: 1899, stock: 25, status: 'Active' },
+    { name: 'Sandals', category: footwear, description: 'Comfortable sandals with adjustable straps. Great for summer.', price: 599, stock: 40, status: 'Active' },
+    { name: 'Boots', category: footwear, description: 'Sturdy leather boots for outdoor adventures. Waterproof and durable.', price: 2299, stock: 15, status: 'Active' },
+    { name: 'Loafers', category: footwear, description: 'Classic leather loafers for formal occasions. Comfortable and stylish.', price: 1599, stock: 20, status: 'Active' },
+    { name: 'Slippers', category: footwear, description: 'Soft and comfortable slippers for home use. Non-slip sole.', price: 299, stock: 60, status: 'Active' },
+    { name: 'Leather Belt', category: accessories, description: 'Genuine leather belt with classic buckle. Available in multiple sizes.', price: 499, stock: 50, status: 'Active' },
+    { name: 'Watch', category: accessories, description: 'Elegant analog watch with leather strap. Water resistant.', price: 2999, stock: 12, status: 'Active' },
+    { name: 'Necklace', category: accessories, description: 'Sterling silver necklace with pendant. Perfect for gifting.', price: 1299, stock: 18, status: 'Active' },
+    { name: 'Bracelet', category: accessories, description: 'Stainless steel bracelet with adjustable clasp. Unisex design.', price: 699, stock: 30, status: 'Active' },
+    { name: 'Ring', category: accessories, description: 'Titanium ring with brushed finish. Available in multiple sizes.', price: 899, stock: 25, status: 'Active' },
+    { name: 'Sunglasses Case', category: accessories, description: 'Hard shell sunglasses case with soft interior. Protects your sunglasses.', price: 199, stock: 50, status: 'Inactive' },
+    { name: 'Tie', category: accessories, description: 'Silk tie with classic pattern. Perfect for business and formal occasions.', price: 399, stock: 35, status: 'Active' },
+    { name: 'Bluetooth Speaker', category: electronics, description: 'Portable Bluetooth speaker with 10-hour battery life. Waterproof design.', price: 1999, stock: 20, status: 'Active' },
+    { name: 'Power Bank', category: electronics, description: '10000mAh power bank with fast charging. Dual USB ports.', price: 899, stock: 45, status: 'Active' },
+    { name: 'USB Cable', category: electronics, description: 'USB-C to USB-A cable for charging and data transfer. 1.5m length.', price: 199, stock: 100, status: 'Active' },
+    { name: 'Laptop Stand', category: electronics, description: 'Adjustable aluminum laptop stand. Ergonomic design for better posture.', price: 1499, stock: 15, status: 'Active' },
+    { name: 'Mouse Pad', category: electronics, description: 'Large mouse pad with smooth surface. Non-slip rubber base.', price: 249, stock: 80, status: 'Active' },
+    { name: 'Phone Holder', category: electronics, description: 'Adjustable phone holder for desk. Compatible with all phone sizes.', price: 399, stock: 30, status: 'Active' },
+    { name: 'Laptop Sleeve', category: bags, description: 'Padded laptop sleeve for 15-inch laptops. Water-resistant material.', price: 799, stock: 25, status: 'Active' },
+    { name: 'Tote Bag', category: bags, description: 'Canvas tote bag for shopping and everyday use. Eco-friendly material.', price: 599, stock: 30, status: 'Active' },
+    { name: 'Travel Bag', category: bags, description: 'Spacious travel bag with multiple compartments. Perfect for weekend trips.', price: 1999, stock: 10, status: 'Active' },
+    { name: 'Sling Bag', category: bags, description: 'Compact sling bag for essentials. Adjustable strap for comfort.', price: 699, stock: 35, status: 'Active' },
+    { name: 'Duffel Bag', category: bags, description: 'Large duffel bag for gym and sports. Water-resistant bottom.', price: 1299, stock: 15, status: 'Active' },
+  ];
 
-  // Get product IDs
-  const productList = await prisma.product.findMany();
-  const getProductId = (name) => productList.find(p => p.name === name)?.id;
+  // Fetch images from Pixabay
+  console.log('Fetching product images from Pixabay...');
+  const productNames = productData.map(p => p.name);
+  const images = await getProductImages(productNames);
+  console.log(`Fetched ${Object.keys(images).length} images`);
+
+  // Create products with fetched images
+  const products = await Promise.all(
+    productData.map(product =>
+      prisma.product.create({
+        data: {
+          name: product.name,
+          image: images[product.name] || `https://via.placeholder.com/400x400/f0f0f0/333?text=${encodeURIComponent(product.name)}`,
+          categoryId: product.category.id,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          status: product.status
+        }
+      })
+    )
+  );
+
+  console.log(`Created ${products.length} products`);
 
   // Seed orders
   const orders = await Promise.all([
@@ -171,18 +105,20 @@ async function main() {
       data: {
         id: 'ORD-001',
         customerName: 'Juan Dela Cruz',
-        email: 'juan@email.com',
+        email: 'juan@test.com',
         phone: '09171234567',
         address: '123 Main St, Quezon City',
         subtotal: 1797,
-        total: 1797,
+        tax: 215.64,
+        shippingCost: 0,
+        total: 2012.64,
         paymentMethod: 'Cash on Delivery',
         status: 'Completed',
         orderDate: new Date('2025-01-15'),
         items: {
           create: [
-            { productId: getProductId('Classic White T-Shirt'), productName: 'Classic White T-Shirt', price: 499, quantity: 2 },
-            { productId: getProductId('Leather Wallet'), productName: 'Leather Wallet', price: 799, quantity: 1 },
+            { productId: products[0].id, productName: 'Classic White T-Shirt', price: 499, quantity: 2 },
+            { productId: products[3].id, productName: 'Leather Wallet', price: 799, quantity: 1 },
           ]
         }
       }
@@ -191,18 +127,20 @@ async function main() {
       data: {
         id: 'ORD-002',
         customerName: 'Maria Santos',
-        email: 'maria@email.com',
+        email: 'maria@test.com',
         phone: '09181234567',
         address: '456 Rizal Ave, Manila',
         subtotal: 2499,
-        total: 2499,
+        tax: 299.88,
+        shippingCost: 0,
+        total: 2798.88,
         paymentMethod: 'E-Wallet',
         status: 'Shipped',
         orderDate: new Date('2025-01-18'),
         notes: 'Please deliver in the morning',
         items: {
           create: [
-            { productId: getProductId('Running Shoes'), productName: 'Running Shoes', price: 2499, quantity: 1 },
+            { productId: products[2].id, productName: 'Running Shoes', price: 2499, quantity: 1 },
           ]
         }
       }
@@ -211,18 +149,20 @@ async function main() {
       data: {
         id: 'ORD-003',
         customerName: 'Pedro Reyes',
-        email: 'pedro@email.com',
+        email: 'pedro@test.com',
         phone: '09191234567',
         address: '789 Bonifacio St, Makati',
         subtotal: 2197,
-        total: 2197,
+        tax: 263.64,
+        shippingCost: 0,
+        total: 2460.64,
         paymentMethod: 'Bank Transfer',
         status: 'Pending',
         orderDate: new Date('2025-01-20'),
         items: {
           create: [
-            { productId: getProductId('Wireless Earbuds'), productName: 'Wireless Earbuds', price: 1599, quantity: 1 },
-            { productId: getProductId('Phone Case'), productName: 'Phone Case', price: 299, quantity: 2 },
+            { productId: products[4].id, productName: 'Wireless Earbuds', price: 1599, quantity: 1 },
+            { productId: products[10].id, productName: 'Phone Case', price: 299, quantity: 2 },
           ]
         }
       }
@@ -231,18 +171,20 @@ async function main() {
       data: {
         id: 'ORD-004',
         customerName: 'Ana Garcia',
-        email: 'ana@email.com',
+        email: 'ana@test.com',
         phone: '09201234567',
         address: '321 Aguinaldo Hwy, Cavite',
         subtotal: 3499,
-        total: 3499,
+        tax: 419.88,
+        shippingCost: 0,
+        total: 3918.88,
         paymentMethod: 'Cash on Delivery',
         status: 'Confirmed',
         orderDate: new Date('2025-01-21'),
         notes: 'Gift wrap please',
         items: {
           create: [
-            { productId: getProductId('Smartwatch'), productName: 'Smartwatch', price: 3499, quantity: 1 },
+            { productId: products[5].id, productName: 'Smartwatch', price: 3499, quantity: 1 },
           ]
         }
       }
@@ -251,19 +193,21 @@ async function main() {
       data: {
         id: 'ORD-005',
         customerName: 'Carlos Lopez',
-        email: 'carlos@email.com',
+        email: 'carlos@test.com',
         phone: '09211234567',
         address: '654 Mabini St, Pasig',
         subtotal: 2997,
-        total: 2997,
+        tax: 359.64,
+        shippingCost: 0,
+        total: 3356.64,
         paymentMethod: 'E-Wallet',
         status: 'Preparing',
         orderDate: new Date('2025-01-22'),
         items: {
           create: [
-            { productId: getProductId('Canvas Backpack'), productName: 'Canvas Backpack', price: 999, quantity: 1 },
-            { productId: getProductId('Sunglasses'), productName: 'Sunglasses', price: 699, quantity: 1 },
-            { productId: getProductId('Denim Jacket'), productName: 'Denim Jacket', price: 1299, quantity: 1 },
+            { productId: products[6].id, productName: 'Canvas Backpack', price: 999, quantity: 1 },
+            { productId: products[7].id, productName: 'Sunglasses', price: 699, quantity: 1 },
+            { productId: products[1].id, productName: 'Denim Jacket', price: 1299, quantity: 1 },
           ]
         }
       }
@@ -276,10 +220,36 @@ async function main() {
   const admin = await prisma.adminUser.create({
     data: {
       username: 'admin',
-      password: hashedPassword
+      password: hashedPassword,
+      role: 'admin'
     }
   });
   console.log(`Created admin user: ${admin.username}`);
+
+  // Seed sample discounts
+  const discounts = await Promise.all([
+    prisma.discount.create({
+      data: {
+        code: 'WELCOME10',
+        type: 'percentage',
+        value: 10,
+        minOrder: 500,
+        maxUses: 100,
+        isActive: true
+      }
+    }),
+    prisma.discount.create({
+      data: {
+        code: 'FLAT50',
+        type: 'fixed',
+        value: 50,
+        minOrder: 200,
+        maxUses: 50,
+        isActive: true
+      }
+    }),
+  ]);
+  console.log(`Created ${discounts.length} discount codes`);
 
   console.log('Seeding completed!');
 }
