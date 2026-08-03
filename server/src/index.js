@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 const { apiLimiter, authLimiter } = require('./middleware/rateLimiter');
 const { sanitizeBody, sanitizeQuery } = require('./middleware/sanitize');
 const requestLogger = require('./middleware/logger');
@@ -17,6 +18,7 @@ const authRoutes = require('./routes/auth');
 const statsRoutes = require('./routes/stats');
 const discountRoutes = require('./routes/discounts');
 const wishlistRoutes = require('./routes/wishlist');
+const analyticsRoutes = require('./routes/analytics');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +31,9 @@ app.use(apiLimiter); // Rate limiting for all API routes
 // Request parsing
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Parse URL-encoded bodies
+
+// Static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Sanitization middleware
 app.use(sanitizeBody); // Sanitize request body
@@ -47,6 +52,7 @@ app.use('/api/auth', authLimiter, authRoutes); // Stricter rate limit for admin 
 app.use('/api/stats', statsRoutes);
 app.use('/api/discounts', discountRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Error handling middleware (must be after routes)
 app.use(errorHandler);
