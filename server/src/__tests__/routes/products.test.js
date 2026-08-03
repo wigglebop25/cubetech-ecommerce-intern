@@ -1,21 +1,38 @@
 const request = require('supertest');
 const express = require('express');
 const productRoutes = require('../../routes/products');
+const authRoutes = require('../../routes/auth');
 const { prisma } = require('../../db');
 const errorHandler = require('../../middleware/errorHandler');
+const argon2 = require('argon2');
 
 const app = express();
 app.use(express.json());
 app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
 app.use(errorHandler);
 
 describe('Product Routes', () => {
   let category;
+  let adminToken;
 
   beforeEach(async () => {
+    // Create category
     category = await prisma.category.create({
       data: { name: 'Clothing', description: 'Apparel' }
     });
+
+    // Create admin user and get token
+    const hashedPassword = await argon2.hash('admin123');
+    await prisma.adminUser.create({
+      data: { username: 'admin', password: hashedPassword, role: 'admin' }
+    });
+
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'admin123' });
+
+    adminToken = loginRes.body.accessToken;
   });
 
   describe('GET /api/products', () => {
@@ -145,6 +162,7 @@ describe('Product Routes', () => {
     it('creates a new product', async () => {
       const res = await request(app)
         .post('/api/products')
+        .set('Authorization', `Bearer ${adminToken}`)
         .send({
           name: 'New Product',
           image: 'img.jpg',
@@ -159,6 +177,20 @@ describe('Product Routes', () => {
       expect(res.body.name).toBe('New Product');
       expect(res.body.price).toBe('150');
     });
+
+    it('returns 401 without auth token', async () => {
+      const res = await request(app)
+        .post('/api/products')
+        .send({
+          name: 'New Product',
+          image: 'img.jpg',
+          categoryId: category.id,
+          price: 150,
+          stock: 20
+        });
+
+      expect(res.status).toBe(401);
+    });
   });
 
   describe('PUT /api/products/:id', () => {
@@ -169,6 +201,7 @@ describe('Product Routes', () => {
 
       const res = await request(app)
         .put(`/api/products/${product.id}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send({ name: 'New Name', price: 200 });
 
       expect(res.status).toBe(200);
@@ -182,7 +215,10 @@ describe('Product Routes', () => {
         data: { name: 'To Delete', image: 'img.jpg', categoryId: category.id, price: 100, stock: 10 }
       });
 
-      const res = await request(app).delete(`/api/products/${product.id}`);
+      const res = await request(app)
+        .delete(`/api/products/${product.id}`)
+        .set('Authorization', `Bearer ${adminToken}`);
+
       expect(res.status).toBe(200);
       expect(res.body.message).toBe('Product deleted');
 
