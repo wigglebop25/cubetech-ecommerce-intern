@@ -36,13 +36,13 @@ class AuthService {
     }
 
     // Generate tokens
-    const payload = { id: user.id, username: user.username, role: 'admin' };
+    const payload = { id: user.id, username: user.username, role: user.role || 'admin' };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
     return {
       message: 'Login successful',
-      user: { id: user.id, username: user.username },
+      user: { id: user.id, username: user.username, role: user.role || 'admin' },
       accessToken,
       refreshToken
     };
