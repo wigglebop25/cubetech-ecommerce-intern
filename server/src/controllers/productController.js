@@ -141,6 +141,26 @@ class ProductController {
       next(error);
     }
   }
+
+  // POST /api/products/:id/image - upload product image
+  async uploadImage(req, res, next) {
+    try {
+      const id = parseInt(req.params.id);
+      const file = req.file;
+
+      if (!file) {
+        const error = new Error('No image file provided');
+        error.status = 400;
+        throw error;
+      }
+
+      const imageUrl = `/uploads/products/${file.filename}`;
+      const product = await this.productService.updateProduct(id, { image: imageUrl });
+      res.json(product);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = ProductController;
