@@ -4,6 +4,7 @@ const orderRepository = require('../repositories/orderRepository');
 const CustomerService = require('../services/customerService');
 const CustomerController = require('../controllers/customerController');
 
+// Dependency Injection: repository → service → controller
 const customerService = new CustomerService(orderRepository);
 const customerController = new CustomerController(customerService);
 

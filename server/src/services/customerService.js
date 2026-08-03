@@ -1,11 +1,16 @@
+// CustomerService: derives customer data from orders
+// No separate customer table - customers are calculated from order history
 class CustomerService {
   constructor(orderRepository) {
     this.orderRepository = orderRepository;
   }
 
+  // Get customers derived from orders
+  // Groups orders by email to create customer profiles
   async getCustomers() {
     const orders = await this.orderRepository.findAll();
 
+    // Group orders by email to derive customers
     const customerMap = {};
     orders.forEach(order => {
       if (!customerMap[order.email]) {

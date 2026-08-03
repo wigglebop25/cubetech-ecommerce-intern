@@ -4,6 +4,7 @@ const adminRepository = require('../repositories/adminRepository');
 const AuthService = require('../services/authService');
 const AuthController = require('../controllers/authController');
 
+// Dependency Injection: repository → service → controller
 const authService = new AuthService(adminRepository);
 const authController = new AuthController(authService);
 

@@ -1,13 +1,17 @@
+// OrderService: business logic for orders
+// Receives order and product repositories via constructor injection (DI pattern)
 class OrderService {
   constructor(orderRepository, productRepository) {
     this.orderRepository = orderRepository;
     this.productRepository = productRepository;
   }
 
+  // Get orders with optional filters
   async getOrders(filters) {
     return this.orderRepository.findAll(filters);
   }
 
+  // Get single order, throw 404 if not found
   async getOrderById(id) {
     const order = await this.orderRepository.findById(id);
     if (!order) {
@@ -18,12 +22,15 @@ class OrderService {
     return order;
   }
 
+  // Create order with auto-generated order ID and stock update
   async createOrder(data) {
     const { items, ...orderData } = data;
 
+    // Generate order ID (ORD-001, ORD-002, etc.)
     const count = await this.orderRepository.count();
     const orderId = `ORD-${String(count + 1).padStart(3, '0')}`;
 
+    // Create order with items
     const order = await this.orderRepository.create({
       id: orderId,
       ...orderData,
@@ -38,6 +45,7 @@ class OrderService {
       }
     });
 
+    // Update product stock (decrement)
     for (const item of items) {
       await this.productRepository.update(item.productId, {
         stock: { decrement: item.quantity }
@@ -47,6 +55,7 @@ class OrderService {
     return order;
   }
 
+  // Update order status (verify order exists first)
   async updateOrderStatus(id, status) {
     await this.getOrderById(id);
     return this.orderRepository.updateStatus(id, status);

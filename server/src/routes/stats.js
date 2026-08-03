@@ -5,6 +5,7 @@ const orderRepository = require('../repositories/orderRepository');
 const StatsService = require('../services/statsService');
 const StatsController = require('../controllers/statsController');
 
+// Dependency Injection: repositories → service → controller
 const statsService = new StatsService(productRepository, orderRepository);
 const statsController = new StatsController(statsService);
 

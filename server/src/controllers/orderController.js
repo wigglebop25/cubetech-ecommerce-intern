@@ -1,8 +1,11 @@
+// OrderController: handles HTTP requests/responses for orders
+// Receives service via constructor injection (DI pattern)
 class OrderController {
   constructor(orderService) {
     this.orderService = orderService;
   }
 
+  // GET /api/orders - list all orders with optional filters
   async getAll(req, res, next) {
     try {
       const { status, search } = req.query;
@@ -22,6 +25,7 @@ class OrderController {
     }
   }
 
+  // GET /api/orders/:id - get single order
   async getById(req, res, next) {
     try {
       const order = await this.orderService.getOrderById(req.params.id);
@@ -31,6 +35,7 @@ class OrderController {
     }
   }
 
+  // POST /api/orders - create new order
   async create(req, res, next) {
     try {
       const order = await this.orderService.createOrder(req.body);
@@ -40,6 +45,7 @@ class OrderController {
     }
   }
 
+  // PUT /api/orders/:id/status - update order status
   async updateStatus(req, res, next) {
     try {
       const order = await this.orderService.updateOrderStatus(req.params.id, req.body.status);

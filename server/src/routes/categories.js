@@ -4,6 +4,7 @@ const categoryRepository = require('../repositories/categoryRepository');
 const CategoryService = require('../services/categoryService');
 const CategoryController = require('../controllers/categoryController');
 
+// Dependency Injection: repository → service → controller
 const categoryService = new CategoryService(categoryRepository);
 const categoryController = new CategoryController(categoryService);
 

@@ -4,6 +4,7 @@ const productRepository = require('../repositories/productRepository');
 const ProductService = require('../services/productService');
 const ProductController = require('../controllers/productController');
 
+// Dependency Injection: repository → service → controller
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 

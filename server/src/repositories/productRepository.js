@@ -1,6 +1,8 @@
 const { prisma } = require('../db');
 
+// ProductRepository: handles all database operations for products
 class ProductRepository {
+  // Get all products, optionally filtered by category/status/search
   async findAll(filters = {}) {
     return prisma.product.findMany({
       where: filters,
@@ -9,6 +11,7 @@ class ProductRepository {
     });
   }
 
+  // Get single product by ID with category relation
   async findById(id) {
     return prisma.product.findUnique({
       where: { id },
@@ -16,6 +19,7 @@ class ProductRepository {
     });
   }
 
+  // Create new product
   async create(data) {
     return prisma.product.create({
       data,
@@ -23,6 +27,7 @@ class ProductRepository {
     });
   }
 
+  // Update existing product
   async update(id, data) {
     return prisma.product.update({
       where: { id },
@@ -31,6 +36,7 @@ class ProductRepository {
     });
   }
 
+  // Delete product by ID
   async delete(id) {
     return prisma.product.delete({ where: { id } });
   }

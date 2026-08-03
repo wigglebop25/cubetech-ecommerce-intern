@@ -1,3 +1,5 @@
+// Request validation middleware
+// Checks if required fields exist in request body
 function validateRequest(requiredFields) {
   return (req, res, next) => {
     const missing = requiredFields.filter(field => !req.body[field]);
