@@ -2,10 +2,12 @@ const request = require('supertest');
 const express = require('express');
 const customerRoutes = require('../../routes/customers');
 const { prisma } = require('../../db');
+const errorHandler = require('../../middleware/errorHandler');
 
 const app = express();
 app.use(express.json());
 app.use('/api/customers', customerRoutes);
+app.use(errorHandler);
 
 describe('Customer Routes', () => {
   beforeEach(async () => {

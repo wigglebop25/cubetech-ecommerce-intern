@@ -16,6 +16,7 @@ const customerRoutes = require('./routes/customers');
 const authRoutes = require('./routes/auth');
 const statsRoutes = require('./routes/stats');
 const discountRoutes = require('./routes/discounts');
+const wishlistRoutes = require('./routes/wishlist');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -42,9 +43,10 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/customers', customerRoutes);
-app.use('/api/auth', authLimiter, authRoutes); // Stricter rate limit for auth
+app.use('/api/auth', authLimiter, authRoutes); // Stricter rate limit for admin auth
 app.use('/api/stats', statsRoutes);
 app.use('/api/discounts', discountRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // Error handling middleware (must be after routes)
 app.use(errorHandler);
