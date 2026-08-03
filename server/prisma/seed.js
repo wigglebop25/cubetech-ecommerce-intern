@@ -4,11 +4,15 @@ const argon2 = require('argon2');
 async function main() {
   console.log('Seeding database...');
 
-  // Clear existing data
+  // Clear existing data (order matters for foreign keys)
+  await prisma.orderStatusHistory.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
+  await prisma.wishlist.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.customer.deleteMany();
+  await prisma.discount.deleteMany();
   await prisma.adminUser.deleteMany();
 
   // Seed categories one by one to ensure correct IDs
