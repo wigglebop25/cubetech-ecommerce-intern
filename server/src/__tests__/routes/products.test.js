@@ -22,10 +22,11 @@ describe('Product Routes', () => {
     it('returns empty array when no products exist', async () => {
       const res = await request(app).get('/api/products');
       expect(res.status).toBe(200);
-      expect(res.body).toEqual([]);
+      expect(res.body.data).toEqual([]);
+      expect(res.body.pagination.totalItems).toBe(0);
     });
 
-    it('returns all products', async () => {
+    it('returns all products with pagination', async () => {
       await prisma.product.create({
         data: {
           name: 'Test Product',
@@ -40,8 +41,9 @@ describe('Product Routes', () => {
 
       const res = await request(app).get('/api/products');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].name).toBe('Test Product');
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].name).toBe('Test Product');
+      expect(res.body.pagination.totalItems).toBe(1);
     });
 
     it('filters by category', async () => {
@@ -58,8 +60,8 @@ describe('Product Routes', () => {
 
       const res = await request(app).get('/api/products?category=Clothing');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].name).toBe('T-Shirt');
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].name).toBe('T-Shirt');
     });
 
     it('filters by status', async () => {
@@ -72,8 +74,8 @@ describe('Product Routes', () => {
 
       const res = await request(app).get('/api/products?status=Active');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].name).toBe('Active Product');
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].name).toBe('Active Product');
     });
 
     it('searches by name', async () => {
@@ -86,8 +88,38 @@ describe('Product Routes', () => {
 
       const res = await request(app).get('/api/products?search=shirt');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].name).toBe('White T-Shirt');
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].name).toBe('White T-Shirt');
+    });
+
+    it('paginates results', async () => {
+      // Create 15 products
+      for (let i = 1; i <= 15; i++) {
+        await prisma.product.create({
+          data: { name: `Product ${i}`, image: 'img.jpg', categoryId: category.id, price: 100, stock: 10 }
+        });
+      }
+
+      const res = await request(app).get('/api/products?page=1&limit=10');
+      expect(res.status).toBe(200);
+      expect(res.body.data).toHaveLength(10);
+      expect(res.body.pagination.totalItems).toBe(15);
+      expect(res.body.pagination.totalPages).toBe(2);
+      expect(res.body.pagination.hasNextPage).toBe(true);
+    });
+
+    it('sorts by price', async () => {
+      await prisma.product.create({
+        data: { name: 'Cheap', image: 'img.jpg', categoryId: category.id, price: 50, stock: 10 }
+      });
+      await prisma.product.create({
+        data: { name: 'Expensive', image: 'img.jpg', categoryId: category.id, price: 500, stock: 10 }
+      });
+
+      const res = await request(app).get('/api/products?sort=price:asc');
+      expect(res.status).toBe(200);
+      expect(res.body.data[0].name).toBe('Cheap');
+      expect(res.body.data[1].name).toBe('Expensive');
     });
   });
 

@@ -2,13 +2,22 @@ const { prisma } = require('../db');
 
 // OrderRepository: handles all database operations for orders
 class OrderRepository {
-  // Get all orders with items, optionally filtered
-  async findAll(filters = {}) {
-    return prisma.order.findMany({
-      where: filters,
-      include: { items: true },
-      orderBy: { createdAt: 'desc' }
-    });
+  // Get all orders with filters, sorting, and pagination
+  async findAll(filters = {}, sort = {}, pagination = {}) {
+    const { offset, limit } = pagination;
+    
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where: filters,
+        include: { items: true },
+        orderBy: sort,
+        skip: offset,
+        take: limit
+      }),
+      prisma.order.count({ where: filters })
+    ]);
+    
+    return { orders, total };
   }
 
   // Get single order by ID with items

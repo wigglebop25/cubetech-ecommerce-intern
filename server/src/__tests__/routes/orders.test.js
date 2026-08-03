@@ -2,10 +2,12 @@ const request = require('supertest');
 const express = require('express');
 const orderRoutes = require('../../routes/orders');
 const { prisma } = require('../../db');
+const errorHandler = require('../../middleware/errorHandler');
 
 const app = express();
 app.use(express.json());
 app.use('/api/orders', orderRoutes);
+app.use(errorHandler);
 
 describe('Order Routes', () => {
   let product;
@@ -23,7 +25,8 @@ describe('Order Routes', () => {
     it('returns empty array when no orders exist', async () => {
       const res = await request(app).get('/api/orders');
       expect(res.status).toBe(200);
-      expect(res.body).toEqual([]);
+      expect(res.body.data).toEqual([]);
+      expect(res.body.pagination.totalItems).toBe(0);
     });
 
     it('returns orders with items', async () => {
@@ -47,8 +50,72 @@ describe('Order Routes', () => {
 
       const res = await request(app).get('/api/orders');
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].items).toHaveLength(1);
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].items).toHaveLength(1);
+      expect(res.body.pagination.totalItems).toBe(1);
+    });
+
+    it('paginates results', async () => {
+      // Create 5 orders
+      for (let i = 1; i <= 5; i++) {
+        await prisma.order.create({
+          data: {
+            id: `ORD-${String(i).padStart(3, '0')}`,
+            customerName: `Customer ${i}`,
+            email: `customer${i}@test.com`,
+            phone: '09171234567',
+            address: '123 Main St',
+            subtotal: 500,
+            total: 500,
+            paymentMethod: 'Cash on Delivery',
+            status: 'Pending',
+            orderDate: new Date()
+          }
+        });
+      }
+
+      const res = await request(app).get('/api/orders?page=1&limit=2');
+      expect(res.status).toBe(200);
+      expect(res.body.data).toHaveLength(2);
+      expect(res.body.pagination.totalItems).toBe(5);
+      expect(res.body.pagination.totalPages).toBe(3);
+      expect(res.body.pagination.hasNextPage).toBe(true);
+    });
+
+    it('filters by status', async () => {
+      await prisma.order.create({
+        data: {
+          id: 'ORD-001',
+          customerName: 'Juan',
+          email: 'juan@test.com',
+          phone: '09171234567',
+          address: '123 Main St',
+          subtotal: 500,
+          total: 500,
+          paymentMethod: 'Cash on Delivery',
+          status: 'Pending',
+          orderDate: new Date()
+        }
+      });
+      await prisma.order.create({
+        data: {
+          id: 'ORD-002',
+          customerName: 'Maria',
+          email: 'maria@test.com',
+          phone: '09181234567',
+          address: '456 Rizal Ave',
+          subtotal: 1000,
+          total: 1000,
+          paymentMethod: 'E-Wallet',
+          status: 'Completed',
+          orderDate: new Date()
+        }
+      });
+
+      const res = await request(app).get('/api/orders?status=Pending');
+      expect(res.status).toBe(200);
+      expect(res.body.data).toHaveLength(1);
+      expect(res.body.data[0].status).toBe('Pending');
     });
   });
 

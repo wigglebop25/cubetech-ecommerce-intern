@@ -6,9 +6,9 @@ class OrderService {
     this.productRepository = productRepository;
   }
 
-  // Get orders with optional filters
-  async getOrders(filters) {
-    return this.orderRepository.findAll(filters);
+  // Get orders with filters, sorting, and pagination
+  async getOrders(filters, sort, pagination) {
+    return this.orderRepository.findAll(filters, sort, pagination);
   }
 
   // Get single order, throw 404 if not found

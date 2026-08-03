@@ -8,7 +8,8 @@ class CustomerService {
   // Get customers derived from orders
   // Groups orders by email to create customer profiles
   async getCustomers() {
-    const orders = await this.orderRepository.findAll();
+    // Get all orders (no filters, no pagination)
+    const { orders } = await this.orderRepository.findAll({}, {}, {});
 
     // Group orders by email to derive customers
     const customerMap = {};

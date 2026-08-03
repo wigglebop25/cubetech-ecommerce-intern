@@ -8,8 +8,9 @@ class StatsService {
 
   // Calculate dashboard statistics
   async getStats() {
-    const products = await this.productRepository.findAll();
-    const orders = await this.orderRepository.findAll();
+    // Get all products and orders (no filters, no pagination)
+    const { products } = await this.productRepository.findAll({}, {}, {});
+    const { orders } = await this.orderRepository.findAll({}, {}, {});
 
     const totalProducts = products.length;
     const totalOrders = orders.length;

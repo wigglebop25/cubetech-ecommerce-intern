@@ -5,9 +5,9 @@ class ProductService {
     this.productRepository = productRepository;
   }
 
-  // Get products with optional filters
-  async getProducts(filters) {
-    return this.productRepository.findAll(filters);
+  // Get products with filters, sorting, and pagination
+  async getProducts(filters, sort, pagination) {
+    return this.productRepository.findAll(filters, sort, pagination);
   }
 
   // Get single product, throw 404 if not found
@@ -41,6 +41,21 @@ class ProductService {
   async deleteProduct(id) {
     await this.getProductById(id);
     return this.productRepository.delete(id);
+  }
+
+  // Bulk create products
+  async bulkCreateProducts(products) {
+    return this.productRepository.bulkCreate(products);
+  }
+
+  // Bulk update products
+  async bulkUpdateProducts(updates) {
+    return this.productRepository.bulkUpdate(updates);
+  }
+
+  // Bulk delete products
+  async bulkDeleteProducts(ids) {
+    return this.productRepository.bulkDelete(ids);
   }
 }
 
