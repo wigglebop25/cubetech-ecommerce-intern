@@ -66,6 +66,17 @@ class ProductRepository {
   async bulkDelete(ids) {
     return prisma.product.deleteMany({ where: { id: { in: ids } } });
   }
+
+  // Find low stock products (stock <= lowStockThreshold)
+  async findLowStock() {
+    return prisma.$queryRaw`
+      SELECT p.*, c.name as categoryName 
+      FROM Product p 
+      JOIN Category c ON p.categoryId = c.id 
+      WHERE p.stock <= p.lowStockThreshold AND p.status = 'Active'
+      ORDER BY p.stock ASC
+    `;
+  }
 }
 
 module.exports = new ProductRepository();

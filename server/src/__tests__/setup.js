@@ -1,12 +1,16 @@
 const { prisma } = require('../db');
 
 // Clean up database before each test
+// Delete in order to respect foreign key constraints
 beforeEach(async () => {
-  // Delete in order to respect foreign key constraints
+  await prisma.orderStatusHistory.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
+  await prisma.wishlist.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.customer.deleteMany();
+  await prisma.discount.deleteMany();
   await prisma.adminUser.deleteMany();
 });
 

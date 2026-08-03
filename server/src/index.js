@@ -15,6 +15,7 @@ const orderRoutes = require('./routes/orders');
 const customerRoutes = require('./routes/customers');
 const authRoutes = require('./routes/auth');
 const statsRoutes = require('./routes/stats');
+const discountRoutes = require('./routes/discounts');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -43,6 +44,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/auth', authLimiter, authRoutes); // Stricter rate limit for auth
 app.use('/api/stats', statsRoutes);
+app.use('/api/discounts', discountRoutes);
 
 // Error handling middleware (must be after routes)
 app.use(errorHandler);

@@ -16,17 +16,19 @@ model Category {
 }
 
 model Product {
-  id          Int           @id @default(autoincrement())
-  name        String        @db.VarChar(255)
-  image       String?       @db.Text
-  categoryId  Int
-  category    Category      @relation(fields: [categoryId], references: [id])
-  description String?       @db.Text
-  price       Decimal       @db.Decimal(10, 2)
-  stock       Int           @default(0)
-  status      ProductStatus @default(Active)
-  orderItems  OrderItem[]
-  createdAt   DateTime      @default(now())
+  id                 Int           @id @default(autoincrement())
+  name               String        @db.VarChar(255)
+  image              String?       @db.Text
+  categoryId         Int
+  category           Category      @relation(fields: [categoryId], references: [id])
+  description        String?       @db.Text
+  price              Decimal       @db.Decimal(10, 2)
+  stock              Int           @default(0)
+  lowStockThreshold  Int           @default(5)
+  status             ProductStatus @default(Active)
+  orderItems         OrderItem[]
+  wishlistItems      Wishlist[]
+  createdAt          DateTime      @default(now())
 }
 
 enum ProductStatus {
@@ -42,12 +44,17 @@ model Order {
   phone         String      @db.VarChar(20)
   address       String      @db.Text
   subtotal      Decimal     @db.Decimal(10, 2)
+  tax           Decimal     @db.Decimal(10, 2) @default(0)
+  shippingCost  Decimal     @db.Decimal(10, 2) @default(0)
   total         Decimal     @db.Decimal(10, 2)
   paymentMethod String      @db.VarChar(50)
   status        OrderStatus @default(Pending)
   notes         String?     @db.Text
   orderDate     DateTime
+  discountId    Int?
+  discount      Discount?   @relation(fields: [discountId], references: [id])
   items         OrderItem[]
+  statusHistory OrderStatusHistory[]
   createdAt     DateTime    @default(now())
 }
 
@@ -71,9 +78,54 @@ enum OrderStatus {
   Cancelled
 }
 
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id])
+  status    OrderStatus
+  notes     String?     @db.Text
+  createdAt DateTime    @default(now())
+}
+
 model AdminUser {
   id        Int      @id @default(autoincrement())
   username  String   @unique @db.VarChar(100)
   password  String   @db.VarChar(255)
+  role      String   @default("admin") @db.VarChar(50)
   createdAt DateTime @default(now())
+}
+
+model Discount {
+  id        Int       @id @default(autoincrement())
+  code      String    @unique @db.VarChar(50)
+  type      String    @db.VarChar(20)
+  value     Decimal   @db.Decimal(10, 2)
+  minOrder  Decimal?  @db.Decimal(10, 2)
+  maxUses   Int?
+  usedCount Int       @default(0)
+  expiresAt DateTime?
+  isActive  Boolean   @default(true)
+  orders    Order[]
+  createdAt DateTime  @default(now())
+}
+
+model Customer {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  email       String    @unique @db.VarChar(255)
+  password    String    @db.VarChar(255)
+  phone       String?   @db.VarChar(20)
+  wishlist    Wishlist[]
+  createdAt   DateTime  @default(now())
+}
+
+model Wishlist {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([customerId, productId])
 }

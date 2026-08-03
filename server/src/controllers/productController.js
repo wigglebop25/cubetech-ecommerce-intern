@@ -131,6 +131,16 @@ class ProductController {
       next(error);
     }
   }
+
+  // GET /api/products/low-stock - get low stock products
+  async getLowStock(req, res, next) {
+    try {
+      const products = await this.productService.getLowStockProducts();
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = ProductController;

@@ -11,6 +11,9 @@ const productController = new ProductController(productService);
 // GET /api/products/export - export products (must be before /:id)
 router.get('/export', (req, res, next) => productController.export(req, res, next));
 
+// GET /api/products/low-stock - get low stock products (must be before /:id)
+router.get('/low-stock', (req, res, next) => productController.getLowStock(req, res, next));
+
 // POST /api/products/bulk - bulk create products
 router.post('/bulk', (req, res, next) => productController.bulkCreate(req, res, next));
 

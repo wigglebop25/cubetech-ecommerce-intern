@@ -1,3 +1,8 @@
+const { paginate, getPaginationMeta } = require('../utils/pagination');
+const { parseSort } = require('../utils/sorting');
+const { buildProductFilters } = require('../utils/filtering');
+const { toCSV, toJSON } = require('../utils/export');
+
 // ProductService: business logic for products
 // Receives repository via constructor injection (DI pattern)
 class ProductService {
@@ -56,6 +61,11 @@ class ProductService {
   // Bulk delete products
   async bulkDeleteProducts(ids) {
     return this.productRepository.bulkDelete(ids);
+  }
+
+  // Get low stock products
+  async getLowStockProducts() {
+    return this.productRepository.findLowStock();
   }
 }
 
