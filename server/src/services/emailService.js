@@ -1,5 +1,13 @@
 const nodemailer = require('nodemailer');
 
+const LOGO_URL = 'https://cubetechstorage.blob.core.windows.net/public-assets/logo-white.png';
+
+const logoHtml = `
+  <div style="text-align: center;">
+    <img src="${LOGO_URL}" alt="CubeTech Shop" style="height: 200px; max-width: 100%;">
+  </div>
+`;
+
 // EmailService: handles email notifications via Gmail SMTP
 class EmailService {
   constructor() {
@@ -20,6 +28,7 @@ class EmailService {
       subject: `Order #${order.id} Confirmed - CubeTech Shop`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          ${logoHtml}
           <h1 style="color: #2563eb;">Order Confirmed!</h1>
           <p>Thank you for your order.</p>
           <hr style="border: 1px solid #e5e7eb;">
@@ -54,6 +63,7 @@ class EmailService {
       subject: `Order #${order.id} Status Update - CubeTech Shop`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          ${logoHtml}
           <h1 style="color: #2563eb;">Order Status Updated</h1>
           <p>Your order status has been updated.</p>
           <hr style="border: 1px solid #e5e7eb;">
@@ -85,6 +95,7 @@ class EmailService {
       subject: 'Welcome to CubeTech Shop!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          ${logoHtml}
           <h1 style="color: #2563eb;">Welcome!</h1>
           <p>Thank you for registering with CubeTech Shop.</p>
           <hr style="border: 1px solid #e5e7eb;">
@@ -115,6 +126,7 @@ class EmailService {
       subject: `Order #${order.id} Cancelled - CubeTech Shop`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          ${logoHtml}
           <h1 style="color: #dc2626;">Order Cancelled</h1>
           <p>Your order has been cancelled.</p>
           <hr style="border: 1px solid #e5e7eb;">
