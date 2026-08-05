@@ -1,5 +1,6 @@
 const argon2 = require('argon2');
 const { generateCustomerToken } = require('../utils/customerJwt');
+const emailService = require('./emailService');
 
 // CustomerAuthService: customer authentication logic
 // Receives customer repository via constructor injection (DI pattern)
@@ -44,6 +45,9 @@ class CustomerAuthService {
       email: customer.email,
       role: 'customer'
     });
+
+    // Send welcome email
+    await emailService.sendWelcome(customer);
 
     return {
       message: 'Registration successful',

@@ -18,3 +18,10 @@ export function validatePhone(phone) {
   if (!pattern.test(phone.replace(/\s/g, ''))) return 'Invalid phone number';
   return null;
 }
+
+export function validatePositiveNumber(value, fieldName) {
+  if (value === '' || value === null || value === undefined) return `${fieldName} is required`;
+  const num = Number(value);
+  if (isNaN(num) || num <= 0) return `${fieldName} must be greater than 0`;
+  return null;
+}

@@ -1,4 +1,5 @@
 const { prisma } = require('../db');
+const emailService = require('./emailService');
 
 // OrderService: business logic for orders
 // Receives repositories via constructor injection (DI pattern)
@@ -89,12 +90,16 @@ class OrderService {
       });
     }
 
+    // Send order confirmation email
+    await emailService.sendOrderConfirmation(order);
+
     return order;
   }
 
   // Update order status with history tracking
   async updateOrderStatus(id, status, notes = '') {
-    await this.getOrderById(id);
+    const existingOrder = await this.getOrderById(id);
+    const oldStatus = existingOrder.status;
 
     // Update order status
     const order = await this.orderRepository.updateStatus(id, status);
@@ -102,7 +107,7 @@ class OrderService {
     // Add to status history
     await this.orderStatusRepository.create(id, status, notes);
 
-    // If cancelled, restore stock
+    // If cancelled, restore stock and send cancellation email
     if (status === 'Cancelled') {
       const orderItems = await prisma.orderItem.findMany({
         where: { orderId: id }
@@ -113,6 +118,11 @@ class OrderService {
           stock: { increment: item.quantity }
         });
       }
+
+      await emailService.sendOrderCancelled(order);
+    } else {
+      // Send status update email
+      await emailService.sendStatusUpdate(order, oldStatus, status);
     }
 
     return order;
