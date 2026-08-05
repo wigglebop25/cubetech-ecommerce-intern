@@ -4,15 +4,23 @@ import { api } from '../../services/api';
 import { useData } from '../../context/DataContext';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
+import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { StatusBadge } from '../../components/ui/Badge';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import { ORDER_STATUSES } from '../../utils/constants';
+
+const getNextStatuses = (currentStatus) => {
+  const statusOrder = ['Pending', 'Confirmed', 'Preparing', 'Shipped', 'Completed'];
+  const currentIndex = statusOrder.indexOf(currentStatus);
+  return statusOrder.slice(currentIndex + 1);
+};
 
 export default function OrderDetail() {
   const { id } = useParams();
   const { updateOrderStatus } = useData();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -31,6 +39,16 @@ export default function OrderDetail() {
   const handleStatusChange = async (newStatus) => {
     await updateOrderStatus(id, newStatus);
     setOrder(prev => ({ ...prev, status: newStatus }));
+  };
+
+  const handleCancel = async () => {
+    try {
+      await api.updateOrderStatus(id, 'Cancelled');
+      setOrder(prev => ({ ...prev, status: 'Cancelled' }));
+      setShowCancelDialog(false);
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+    }
   };
 
   if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
@@ -152,16 +170,35 @@ export default function OrderDetail() {
               <select
                 value={order.status}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
               >
-                {ORDER_STATUSES.map(s => (
+                <option value={order.status}>{order.status}</option>
+                {getNextStatuses(order.status).map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+              {['Pending', 'Confirmed', 'Preparing'].includes(order.status) && (
+                <Button
+                  variant="danger"
+                  className="w-full"
+                  onClick={() => setShowCancelDialog(true)}
+                >
+                  Cancel Order
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Cancel Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showCancelDialog}
+        onClose={() => setShowCancelDialog(false)}
+        onConfirm={handleCancel}
+        title="Cancel Order"
+        message={`Are you sure you want to cancel order ${order.id}? This will restore stock for this order.`}
+      />
     </div>
   );
 }
