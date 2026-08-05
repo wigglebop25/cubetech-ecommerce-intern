@@ -83,12 +83,8 @@ class OrderService {
     // Create initial status history
     await this.orderStatusRepository.create(orderId, 'Pending', 'Order placed');
 
-    // Update product stock (decrement)
-    for (const item of items) {
-      await this.productRepository.update(item.productId, {
-        stock: { decrement: item.quantity }
-      });
-    }
+    // Note: Stock is NOT decremented on order creation
+    // Stock is decremented when order status changes to "Confirmed"
 
     // Send order confirmation email
     await emailService.sendOrderConfirmation(order);
@@ -107,22 +103,42 @@ class OrderService {
     // Add to status history
     await this.orderStatusRepository.create(id, status, notes);
 
-    // If cancelled, restore stock and send cancellation email
-    if (status === 'Cancelled') {
+    // If confirmed, decrement stock
+    if (status === 'Confirmed' && oldStatus !== 'Confirmed') {
       const orderItems = await prisma.orderItem.findMany({
         where: { orderId: id }
       });
 
       for (const item of orderItems) {
         await this.productRepository.update(item.productId, {
-          stock: { increment: item.quantity }
+          stock: { decrement: item.quantity }
         });
       }
+    }
 
-      await emailService.sendOrderCancelled(order);
+    // Get order items for email
+    const orderItems = await prisma.orderItem.findMany({
+      where: { orderId: id }
+    });
+
+    // Build order object with items for email
+    const orderWithItems = { ...order, items: orderItems };
+
+    // If cancelled, restore stock and send cancellation email
+    if (status === 'Cancelled') {
+      // Only restore stock if it was previously decremented (status was Confirmed or later)
+      if (['Confirmed', 'Preparing', 'Shipped'].includes(oldStatus)) {
+        for (const item of orderItems) {
+          await this.productRepository.update(item.productId, {
+            stock: { increment: item.quantity }
+          });
+        }
+      }
+
+      await emailService.sendOrderCancelled(orderWithItems);
     } else {
-      // Send status update email
-      await emailService.sendStatusUpdate(order, oldStatus, status);
+      // Send status update email with items
+      await emailService.sendStatusUpdate(orderWithItems, status);
     }
 
     return order;
