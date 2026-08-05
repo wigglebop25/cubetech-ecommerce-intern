@@ -22,5 +22,6 @@ router.get('/export', authenticate, authorize(['admin']), (req, res, next) => or
 router.get('/', authenticate, authorize(['admin']), (req, res, next) => orderController.getAll(req, res, next));
 router.get('/:id', authenticate, authorize(['admin']), (req, res, next) => orderController.getById(req, res, next));
 router.put('/:id/status', authenticate, authorize(['admin']), (req, res, next) => orderController.updateStatus(req, res, next));
+router.put('/:id/cancel', authenticate, authorize(['admin']), (req, res, next) => orderController.cancelOrder(req, res, next));
 
 module.exports = router;

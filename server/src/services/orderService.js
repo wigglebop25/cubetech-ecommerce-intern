@@ -97,6 +97,25 @@ class OrderService {
     const existingOrder = await this.getOrderById(id);
     const oldStatus = existingOrder.status;
 
+    // Define status order (forward only)
+    const statusOrder = ['Pending', 'Confirmed', 'Preparing', 'Shipped', 'Completed'];
+    const oldIndex = statusOrder.indexOf(oldStatus);
+    const newIndex = statusOrder.indexOf(status);
+
+    // Allow Cancel from Pending, Confirmed, Preparing only
+    if (status === 'Cancelled') {
+      if (!['Pending', 'Confirmed', 'Preparing'].includes(oldStatus)) {
+        const error = new Error(`Cannot cancel order with status ${oldStatus}`);
+        error.status = 400;
+        throw error;
+      }
+    } else if (newIndex < oldIndex) {
+      // Prevent backward status changes
+      const error = new Error(`Cannot change status from ${oldStatus} to ${status}. Forward only.`);
+      error.status = 400;
+      throw error;
+    }
+
     // Update order status
     const order = await this.orderRepository.updateStatus(id, status);
 

@@ -58,6 +58,16 @@ class OrderController {
     }
   }
 
+  // PUT /api/orders/:id/cancel - cancel order
+  async cancelOrder(req, res, next) {
+    try {
+      const order = await this.orderService.updateOrderStatus(req.params.id, 'Cancelled', req.body?.notes || '');
+      res.json(order);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // GET /api/orders/export - export orders to CSV or JSON
   async export(req, res, next) {
     try {
