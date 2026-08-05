@@ -56,7 +56,29 @@ class EmailService {
   }
 
   // Send order status update email
-  async sendStatusUpdate(order, oldStatus, newStatus) {
+  async sendStatusUpdate(order, newStatus) {
+    // Build items table
+    let itemsHtml = '';
+    if (order.items && order.items.length > 0) {
+      itemsHtml = `
+        <h3 style="margin-top: 20px; margin-bottom: 10px;">Items Ordered</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <tr style="background-color: #f3f4f6;">
+            <th style="padding: 8px; text-align: left; border: 1px solid #e5e7eb;">Product</th>
+            <th style="padding: 8px; text-align: left; border: 1px solid #e5e7eb;">Qty</th>
+            <th style="padding: 8px; text-align: left; border: 1px solid #e5e7eb;">Price</th>
+          </tr>
+          ${order.items.map(item => `
+            <tr>
+              <td style="padding: 8px; border: 1px solid #e5e7eb;">${item.productName}</td>
+              <td style="padding: 8px; border: 1px solid #e5e7eb;">${item.quantity}</td>
+              <td style="padding: 8px; border: 1px solid #e5e7eb;">₱${parseFloat(item.price).toFixed(2)}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `;
+    }
+
     const mailOptions = {
       from: process.env.GMAIL_USER,
       to: order.email,
@@ -69,8 +91,9 @@ class EmailService {
           <hr style="border: 1px solid #e5e7eb;">
           <p><strong>Order #:</strong> ${order.id}</p>
           <p><strong>Customer:</strong> ${order.customerName}</p>
-          <p><strong>Previous Status:</strong> ${oldStatus}</p>
-          <p><strong>New Status:</strong> ${newStatus}</p>
+          <p><strong>Status:</strong> ${newStatus}</p>
+          <hr style="border: 1px solid #e5e7eb;">
+          ${itemsHtml}
           <hr style="border: 1px solid #e5e7eb;">
           <p style="color: #6b7280;">Thank you for shopping with CubeTech Shop!</p>
         </div>
