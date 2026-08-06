@@ -79,4 +79,71 @@ export const api = {
   // Health
   getHealth: () => 
     fetch(`${API_URL}/health`).then(handleResponse),
+
+  // Customer Auth
+  customerLogin: (data) => 
+    fetch(`${API_URL}/customers/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(handleResponse),
+
+  customerRegister: (data) => 
+    fetch(`${API_URL}/customers/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(handleResponse),
+
+  getCustomerProfile: () => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/customers/profile`, {
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
+
+  updateCustomerProfile: (data) => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/customers/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(data)
+    }).then(handleResponse);
+  },
+
+  // Wishlist
+  getWishlist: () => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/wishlist`, {
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
+
+  addToWishlist: (productId) => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/wishlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ productId })
+    }).then(handleResponse);
+  },
+
+  removeFromWishlist: (productId) => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/wishlist/${productId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
+
+  // Discount
+  getDiscounts: () => 
+    fetch(`${API_URL}/discounts`, { headers: getHeaders(true) }).then(handleResponse),
+
+  getDiscount: (id) => 
+    fetch(`${API_URL}/discounts/${id}`, { headers: getHeaders(true) }).then(handleResponse),
+
+  createDiscount: (data) => 
+    fetch(`${API_URL}/discounts`, { method: 'POST', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+
+  updateDiscount: (id, data) => 
+    fetch(`${API_URL}/discounts/${id}`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+
+  deleteDiscount: (id) => 
+    fetch(`${API_URL}/discounts/${id}`, { method: 'DELETE', headers: getHeaders(true) }).then(handleResponse),
+
+  validateDiscount: (code, orderTotal) => 
+    fetch(`${API_URL}/discounts/validate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, orderTotal }) }).then(handleResponse),
 };
