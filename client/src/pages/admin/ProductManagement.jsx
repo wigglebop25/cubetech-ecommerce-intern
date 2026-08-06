@@ -133,7 +133,7 @@ export default function ProductManagement() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Product Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Product Management</h1>
         <Button onClick={openAddModal}>Add Product</Button>
       </div>
 
@@ -145,7 +145,7 @@ export default function ProductManagement() {
         <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200"
         >
           <option value="">All Categories</option>
           {categories.map(cat => (
@@ -155,7 +155,7 @@ export default function ProductManagement() {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200"
         >
           <option value="">All Statuses</option>
           {PRODUCT_STATUSES.map(s => (
@@ -165,37 +165,48 @@ export default function ProductManagement() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Image</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Name</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Category</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Price</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Stock</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-                <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">Actions</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Image</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Category</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Stock</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
+                <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredProducts.map(product => (
-                <tr key={product.id} className="hover:bg-gray-50">
+                <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                   <td className="px-4 py-3">
                     <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded" />
                   </td>
-                  <td className="px-4 py-3 text-sm font-medium text-gray-800">{product.name}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{product.category?.name}</td>
-                  <td className="px-4 py-3 text-sm text-gray-800">{formatCurrency(product.price)}</td>
-                  <td className="px-4 py-3 text-sm text-gray-800">{product.stock}</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-200">{product.name}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{product.category?.name}</td>
+                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(product.price)}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-800 dark:text-gray-200">{product.stock}</span>
+                      {product.stock < 10 && product.stock > 0 && (
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                          product.stock < 3 ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                        }`}>
+                          {product.stock < 3 ? 'Critical' : 'Low'}
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-4 py-3"><StatusBadge status={product.status} /></td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => openEditModal(product)} className="p-2 text-blue-600 hover:bg-blue-50 rounded cursor-pointer">
+                      <button onClick={() => openEditModal(product)} className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded cursor-pointer">
                         <IoCreate size={18} />
                       </button>
-                      <button onClick={() => setDeleteConfirm(product)} className="p-2 text-red-600 hover:bg-red-50 rounded cursor-pointer">
+                      <button onClick={() => setDeleteConfirm(product)} className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded cursor-pointer">
                         <IoTrash size={18} />
                       </button>
                     </div>
@@ -206,7 +217,7 @@ export default function ProductManagement() {
           </table>
         </div>
         {filteredProducts.length === 0 && (
-          <p className="text-center text-gray-500 py-8">No products found</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 py-8">No products found</p>
         )}
       </div>
 
@@ -214,21 +225,21 @@ export default function ProductManagement() {
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingProduct ? 'Edit Product' : 'Add Product'}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Name *</label>
             <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${formErrors.name ? 'border-red-500' : 'border-gray-300'}`} />
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 ${formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
             {formErrors.name && <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
             <input type="text" value={formData.image} onChange={(e) => setFormData({...formData, image: e.target.value})}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
               placeholder="https://..." />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category *</label>
             <select value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${formErrors.category ? 'border-red-500' : 'border-gray-300'}`}>
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 ${formErrors.category ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}>
               <option value="">Select Category</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -237,28 +248,28 @@ export default function ProductManagement() {
             {formErrors.category && <p className="text-red-500 text-sm mt-1">{formErrors.category}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
             <textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})}
-              rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              rows={3} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price *</label>
               <input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${formErrors.price ? 'border-red-500' : 'border-gray-300'}`} />
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 ${formErrors.price ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
               {formErrors.price && <p className="text-red-500 text-sm mt-1">{formErrors.price}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stock *</label>
               <input type="number" value={formData.stock} onChange={(e) => setFormData({...formData, stock: e.target.value})}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${formErrors.stock ? 'border-red-500' : 'border-gray-300'}`} />
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 ${formErrors.stock ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
               {formErrors.stock && <p className="text-red-500 text-sm mt-1">{formErrors.stock}</p>}
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
             <select value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200">
               {PRODUCT_STATUSES.map(s => (
                 <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>
               ))}
