@@ -106,7 +106,8 @@ class DiscountService {
       discountId: discount.id,
       discountCode: discount.code,
       discountAmount: Math.min(discountAmount, orderTotal),
-      discountType: discount.type
+      discountType: discount.type,
+      remainingUses: discount.maxUses ? discount.maxUses - discount.usedCount : null
     };
   }
 
