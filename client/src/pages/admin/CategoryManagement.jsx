@@ -86,26 +86,26 @@ export default function CategoryManagement() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Category Management</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Category Management</h1>
         <Button onClick={openAddModal}>Add Category</Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Name</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Description</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Products</th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">Actions</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Description</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Products</th>
+              <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {categories.map(category => (
-              <tr key={category.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm font-medium text-gray-800">{category.name}</td>
-                <td className="px-4 py-3 text-sm text-gray-500">{category.description}</td>
-                <td className="px-4 py-3 text-sm text-gray-800">{category._count?.products || 0}</td>
+              <tr key={category.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-200">{category.name}</td>
+                <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{category.description}</td>
+                <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{category._count?.products || 0}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-2">
                     <button onClick={() => openEditModal(category)} className="p-2 text-blue-600 hover:bg-blue-50 rounded cursor-pointer">
@@ -121,7 +121,7 @@ export default function CategoryManagement() {
           </tbody>
         </table>
         {categories.length === 0 && (
-          <p className="text-center text-gray-500 py-8">No categories found</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 py-8">No categories found</p>
         )}
       </div>
 
@@ -129,15 +129,15 @@ export default function CategoryManagement() {
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingCategory ? 'Edit Category' : 'Add Category'}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category Name *</label>
             <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${formErrors.name ? 'border-red-500' : 'border-gray-300'}`} />
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 ${formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
             {formErrors.name && <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
             <textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})}
-              rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              rows={3} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200" />
           </div>
           <div className="flex justify-end gap-3 pt-4">
             <Button variant="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>

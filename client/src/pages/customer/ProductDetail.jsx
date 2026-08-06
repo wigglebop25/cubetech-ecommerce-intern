@@ -51,7 +51,7 @@ export default function ProductDetail() {
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Product Not Found</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Product Not Found</h2>
         <Link to="/products">
           <Button>Back to Products</Button>
         </Link>
@@ -64,18 +64,18 @@ export default function ProductDetail() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
-      <div className="text-sm text-gray-500 mb-6">
-        <Link to="/" className="hover:text-blue-600">Home</Link>
+      <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400">Home</Link>
         <span className="mx-2">/</span>
-        <Link to="/products" className="hover:text-blue-600">Products</Link>
+        <Link to="/products" className="hover:text-blue-600 dark:hover:text-blue-400">Products</Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-800">{product.name}</span>
+        <span className="text-gray-800 dark:text-gray-200">{product.name}</span>
       </div>
 
       {/* Product Info */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         {/* Image */}
-        <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+        <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
           <img
             src={product.image || 'https://via.placeholder.com/600?text=No+Image'}
             alt={product.name}
@@ -88,18 +88,18 @@ export default function ProductDetail() {
 
         {/* Details */}
         <div>
-          <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+          <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
             {product.category?.name}
           </span>
-          <h1 className="text-3xl font-bold text-gray-800 mt-3 mb-2">{product.name}</h1>
-          <p className="text-3xl font-bold text-blue-600 mb-4">{formatCurrency(product.price)}</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-3 mb-2">{product.name}</h1>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">{formatCurrency(product.price)}</p>
 
           <div className="flex items-center gap-3 mb-4">
             <StatusBadge status={isOutOfStock ? 'Out_of_Stock' : 'Active'} />
-            <span className="text-sm text-gray-500">{product.stock} available</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">{product.stock} available</span>
           </div>
 
-          <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">{product.description}</p>
 
           {!isOutOfStock && (
             <div className="flex items-center gap-4 mb-6">
@@ -115,7 +115,7 @@ export default function ProductDetail() {
           )}
 
           {addedMessage && (
-            <p className="text-green-600 font-medium mt-2">{addedMessage}</p>
+            <p className="text-green-600 dark:text-green-400 font-medium mt-2">{addedMessage}</p>
           )}
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function ProductDetail() {
       {/* Related Products */}
       {related.length > 0 && (
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Related Products</h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Related Products</h2>
           <ProductGrid>
             {related.map(p => (
               <ProductCard key={p.id} product={p} />

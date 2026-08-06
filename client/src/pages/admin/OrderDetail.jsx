@@ -56,7 +56,7 @@ export default function OrderDetail() {
   if (!order) {
     return (
       <div className="text-center py-16">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Order Not Found</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Order Not Found</h2>
         <Link to="/admin/orders">
           <Button>Back to Orders</Button>
         </Link>
@@ -67,7 +67,7 @@ export default function OrderDetail() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Order {order.id}</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Order {order.id}</h1>
         <Link to="/admin/orders">
           <Button variant="secondary">Back to Orders</Button>
         </Link>
@@ -77,80 +77,80 @@ export default function OrderDetail() {
         {/* Order Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Customer Info */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Customer Information</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Customer Information</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Name</p>
-                <p className="font-medium">{order.customerName}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Name</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200">{order.customerName}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium">{order.email}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200">{order.email}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">{order.phone}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200">{order.phone}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Payment Method</p>
-                <p className="font-medium">{order.paymentMethod}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Payment Method</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200">{order.paymentMethod}</p>
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-sm text-gray-500">Delivery Address</p>
-              <p className="font-medium">{order.address}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Delivery Address</p>
+              <p className="font-medium text-gray-800 dark:text-gray-200">{order.address}</p>
             </div>
             {order.notes && (
               <div className="mt-4">
-                <p className="text-sm text-gray-500">Order Notes</p>
-                <p className="font-medium">{order.notes}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Order Notes</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200">{order.notes}</p>
               </div>
             )}
           </div>
 
           {/* Items */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Ordered Products</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Ordered Products</h2>
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Product</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Price</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Qty</th>
-                  <th className="px-4 py-2 text-right text-sm font-medium text-gray-500">Subtotal</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Qty</th>
+                  <th className="px-4 py-2 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Subtotal</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {order.items?.map((item, idx) => (
                   <tr key={idx}>
-                    <td className="px-4 py-2 text-sm text-gray-800">{item.productName}</td>
-                    <td className="px-4 py-2 text-sm text-gray-500">{formatCurrency(item.price)}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{item.quantity}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800 text-right">{formatCurrency(item.price * item.quantity)}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{item.productName}</td>
+                    <td className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">{formatCurrency(item.price)}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{item.quantity}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 text-right">{formatCurrency(item.price * item.quantity)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="border-t mt-4 pt-4 space-y-2">
+            <div className="border-t dark:border-gray-600 mt-4 pt-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Subtotal</span>
-                <span>{formatCurrency(order.subtotal)}</span>
+                <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
+                <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.subtotal)}</span>
               </div>
               {order.tax > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Tax</span>
-                  <span>{formatCurrency(order.tax)}</span>
+                  <span className="text-gray-500 dark:text-gray-400">Tax</span>
+                  <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.tax)}</span>
                 </div>
               )}
               {order.shippingCost > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Shipping</span>
-                  <span>{formatCurrency(order.shippingCost)}</span>
+                  <span className="text-gray-500 dark:text-gray-400">Shipping</span>
+                  <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.shippingCost)}</span>
                 </div>
               )}
-              <div className="flex justify-between font-bold text-lg border-t pt-2">
-                <span>Total</span>
+              <div className="flex justify-between font-bold text-lg border-t dark:border-gray-600 pt-2">
+                <span className="text-gray-800 dark:text-gray-200">Total</span>
                 <span className="text-blue-600">{formatCurrency(order.total)}</span>
               </div>
             </div>
@@ -159,18 +159,18 @@ export default function OrderDetail() {
 
         {/* Status */}
         <div className="space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Order Status</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Order Status</h2>
             <div className="mb-4">
               <StatusBadge status={order.status} />
             </div>
-            <p className="text-sm text-gray-500 mb-4">Order Date: {formatDate(order.orderDate)}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Order Date: {formatDate(order.orderDate)}</p>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Update Status</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Update Status</label>
               <select
                 value={order.status}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 dark:bg-gray-700 dark:text-gray-200"
               >
                 <option value={order.status}>{order.status}</option>
                 {getNextStatuses(order.status).map(s => (
