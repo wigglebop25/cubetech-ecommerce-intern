@@ -44,7 +44,7 @@ export function CartProvider({ children }) {
   const clearCart = () => setCartItems([]);
 
   const cartCount = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    () => cartItems.length,
     [cartItems]
   );
 
