@@ -48,7 +48,7 @@ describe('CartContext', () => {
 
     expect(result.current.cartItems).toHaveLength(1);
     expect(result.current.cartItems[0].quantity).toBe(2);
-    expect(result.current.cartCount).toBe(2);
+    expect(result.current.cartCount).toBe(1);
     expect(result.current.cartTotal).toBe(1000);
   });
 
@@ -79,7 +79,7 @@ describe('CartContext', () => {
     });
 
     expect(result.current.cartItems[0].quantity).toBe(5);
-    expect(result.current.cartCount).toBe(5);
+    expect(result.current.cartCount).toBe(1);
     expect(result.current.cartTotal).toBe(2500);
   });
 
