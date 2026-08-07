@@ -96,12 +96,14 @@ export default function Register() {
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
             <input
-              type="tel"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="09XX XXX XXXX"
+              placeholder="09171234567"
             />
           </div>
 

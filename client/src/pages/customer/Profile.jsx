@@ -159,10 +159,12 @@ export default function Profile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
                   <input
-                    type="tel"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={formData.phone}
                     onChange={handlePhoneChange}
-                    placeholder="0917 123 4567"
+                    placeholder="09XX XXX XXXX"
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">10-11 digits, spaces and dashes allowed</p>

@@ -90,7 +90,9 @@ export default function Checkout() {
     setDiscountError('');
   };
 
-  const finalTotal = cartTotal - discountAmount;
+  const subtotalAfterDiscount = cartTotal - discountAmount;
+  const tax = subtotalAfterDiscount * 0.12;
+  const finalTotal = subtotalAfterDiscount + tax;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -282,6 +284,11 @@ export default function Checkout() {
                   <span>-{formatCurrency(discountAmount)}</span>
                 </div>
               )}
+
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                <span>Tax (12% VAT)</span>
+                <span>{formatCurrency(tax)}</span>
+              </div>
 
               <div className="border-t dark:border-gray-600 pt-3 flex justify-between font-bold text-lg">
                 <span className="text-gray-800 dark:text-gray-200">Total</span>
