@@ -85,7 +85,14 @@ class OrderController {
         total: o.total,
         paymentMethod: o.paymentMethod,
         status: o.status,
-        orderDate: o.orderDate
+        orderDate: new Date(o.orderDate).toLocaleString('en-PH', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        })
       }));
       
       if (format === 'json') {
