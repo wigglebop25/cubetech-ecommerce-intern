@@ -108,10 +108,10 @@ export default function CategoryManagement() {
                 <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{category._count?.products || 0}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => openEditModal(category)} className="p-2 text-blue-600 hover:bg-blue-50 rounded cursor-pointer">
+                    <button onClick={() => openEditModal(category)} className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded cursor-pointer">
                       <IoCreate size={18} />
                     </button>
-                    <button onClick={() => handleDeleteClick(category)} className="p-2 text-red-600 hover:bg-red-50 rounded cursor-pointer">
+                    <button onClick={() => handleDeleteClick(category)} className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded cursor-pointer">
                       <IoTrash size={18} />
                     </button>
                   </div>

@@ -30,7 +30,7 @@ export default function OrderConfirmation() {
 
   if (!order) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+      <div className="max-w-7xl mx-auto px-4 py-8 text-center">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Order Not Found</h2>
         <Link to="/products">
           <Button>Continue Shopping</Button>
@@ -40,10 +40,10 @@ export default function OrderConfirmation() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-16">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
         <IoCheckmarkCircle className="text-green-500 mx-auto mb-4" size={64} />
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Order Confirmed!</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Order Confirmed!</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-6">Thank you for your purchase.</p>
 
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6 text-left">
@@ -76,7 +76,7 @@ export default function OrderConfirmation() {
 
           <div className="border-t dark:border-gray-600 pt-4 mt-4 flex justify-between font-bold text-lg">
             <span className="text-gray-800 dark:text-gray-200">Total</span>
-            <span className="text-blue-600">{formatCurrency(order.total)}</span>
+            <span className="text-blue-600 dark:text-blue-400">{formatCurrency(order.total)}</span>
           </div>
         </div>
 

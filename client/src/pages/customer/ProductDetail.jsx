@@ -91,7 +91,7 @@ export default function ProductDetail() {
           <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
             {product.category?.name}
           </span>
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-3 mb-2">{product.name}</h1>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mt-3 mb-2">{product.name}</h1>
           <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">{formatCurrency(product.price)}</p>
 
           <div className="flex items-center gap-3 mb-4">

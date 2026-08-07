@@ -115,19 +115,19 @@ export default function OrderDetail() {
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Qty</th>
-                  <th className="px-4 py-2 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Subtotal</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Qty</th>
+                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Subtotal</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {order.items?.map((item, idx) => (
-                  <tr key={idx}>
-                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{item.productName}</td>
-                    <td className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">{formatCurrency(item.price)}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{item.quantity}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-200 text-right">{formatCurrency(item.price * item.quantity)}</td>
+                  <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{item.productName}</td>
+                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{formatCurrency(item.price)}</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{item.quantity}</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 text-right">{formatCurrency(item.price * item.quantity)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -151,7 +151,7 @@ export default function OrderDetail() {
               )}
               <div className="flex justify-between font-bold text-lg border-t dark:border-gray-600 pt-2">
                 <span className="text-gray-800 dark:text-gray-200">Total</span>
-                <span className="text-blue-600">{formatCurrency(order.total)}</span>
+                <span className="text-blue-600 dark:text-blue-400">{formatCurrency(order.total)}</span>
               </div>
             </div>
           </div>

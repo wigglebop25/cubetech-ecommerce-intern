@@ -140,7 +140,7 @@ export default function Checkout() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-8">Checkout</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Checkout</h1>
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -247,7 +247,7 @@ export default function Checkout() {
                     <button
                       type="button"
                       onClick={handleRemoveDiscount}
-                      className="text-sm text-red-500 hover:text-red-700 cursor-pointer"
+                      className="text-sm text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 cursor-pointer"
                     >
                       Remove
                     </button>
@@ -285,7 +285,7 @@ export default function Checkout() {
 
               <div className="border-t dark:border-gray-600 pt-3 flex justify-between font-bold text-lg">
                 <span className="text-gray-800 dark:text-gray-200">Total</span>
-                <span className="text-blue-600">{formatCurrency(finalTotal)}</span>
+                <span className="text-blue-600 dark:text-blue-400">{formatCurrency(finalTotal)}</span>
               </div>
             </div>
             <Button type="submit" size="lg" className="w-full" disabled={submitting}>
