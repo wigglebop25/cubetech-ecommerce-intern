@@ -3,7 +3,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 const getHeaders = (includeAuth = false) => {
   const headers = { 'Content-Type': 'application/json' };
   if (includeAuth) {
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     if (token) headers['Authorization'] = `Bearer ${token}`;
   }
   return headers;
