@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import SearchBar from '../../components/ui/SearchBar';
 import Spinner from '../../components/ui/Spinner';
 import Button from '../../components/ui/Button';
@@ -18,6 +19,7 @@ const getNextStatuses = (currentStatus) => {
 };
 
 export default function OrderManagement() {
+  const { isAuthenticated } = useAuth();
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
@@ -35,6 +37,8 @@ export default function OrderManagement() {
   }, [debouncedSearch, filterStatus]);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+    
     const fetchOrders = async () => {
       setLoading(true);
       try {
@@ -57,7 +61,7 @@ export default function OrderManagement() {
       }
     };
     fetchOrders();
-  }, [debouncedSearch, filterStatus, page]);
+  }, [debouncedSearch, filterStatus, page, isAuthenticated]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
