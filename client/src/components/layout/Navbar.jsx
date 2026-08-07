@@ -3,7 +3,7 @@ import { useCart } from '../../context/CartContext';
 import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useState, useRef, useEffect } from 'react';
-import { IoCart, IoMenu, IoClose, IoPerson, IoHeart, IoLogOut, IoChevronDown, IoSunny, IoMoon } from 'react-icons/io5';
+import { IoCart, IoMenu, IoClose, IoPerson, IoHeart, IoLogOut, IoChevronDown, IoSunny, IoMoon, IoList } from 'react-icons/io5';
 
 export default function Navbar() {
   const { cartCount } = useCart();
@@ -120,6 +120,13 @@ export default function Navbar() {
                     >
                       <IoHeart size={16} /> My Wishlist
                     </Link>
+                    <Link
+                      to="/orders"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      <IoList size={16} /> My Orders
+                    </Link>
                     <button
                       onClick={() => { logout(); setUserDropdownOpen(false); }}
                       className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full cursor-pointer"
@@ -205,6 +212,13 @@ export default function Navbar() {
                     className="block py-2 px-2 text-sm font-medium text-gray-600 dark:text-gray-300"
                   >
                     My Wishlist
+                  </Link>
+                  <Link
+                    to="/orders"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block py-2 px-2 text-sm font-medium text-gray-600 dark:text-gray-300"
+                  >
+                    My Orders
                   </Link>
                   <button
                     onClick={() => { logout(); setMobileMenuOpen(false); }}

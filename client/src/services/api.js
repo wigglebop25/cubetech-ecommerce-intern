@@ -146,4 +146,27 @@ export const api = {
 
   validateDiscount: (code, orderTotal) => 
     fetch(`${API_URL}/discounts/validate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, orderTotal }) }).then(handleResponse),
+
+  // Customer Orders
+  getCustomerOrders: (params = '') => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/customer/orders?${params}`, {
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
+
+  getCustomerOrder: (id) => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/customer/orders/${id}`, {
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
+
+  cancelCustomerOrder: (id) => {
+    const token = localStorage.getItem('customerToken');
+    return fetch(`${API_URL}/customer/orders/${id}/cancel`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    }).then(handleResponse);
+  },
 };

@@ -20,6 +20,8 @@ import CustomerLogin from './pages/customer/Login';
 import Register from './pages/customer/Register';
 import Profile from './pages/customer/Profile';
 import Wishlist from './pages/customer/Wishlist';
+import CustomerOrders from './pages/customer/Orders';
+import CustomerOrderDetail from './pages/customer/OrderDetail';
 
 // Admin pages
 import Login from './pages/admin/Login';
@@ -51,6 +53,8 @@ function App() {
                 <Route path="/register" element={<CustomerLayout showFooter={false}><Register /></CustomerLayout>} />
                 <Route path="/profile" element={<CustomerLayout><Profile /></CustomerLayout>} />
                 <Route path="/wishlist" element={<CustomerLayout><Wishlist /></CustomerLayout>} />
+                <Route path="/orders" element={<CustomerLayout><CustomerOrders /></CustomerLayout>} />
+                <Route path="/orders/:id" element={<CustomerLayout><CustomerOrderDetail /></CustomerLayout>} />
 
                 {/* Admin routes */}
                 <Route path="/admin/login" element={<Login />} />
