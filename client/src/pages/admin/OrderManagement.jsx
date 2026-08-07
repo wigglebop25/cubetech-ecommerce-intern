@@ -95,7 +95,7 @@ export default function OrderManagement() {
       if (search) params.append('search', search);
       params.append('format', 'csv');
 
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
       const response = await fetch(`${API_URL}/orders/export?${params}`, {
         headers: { 'Authorization': `Bearer ${token}` }
