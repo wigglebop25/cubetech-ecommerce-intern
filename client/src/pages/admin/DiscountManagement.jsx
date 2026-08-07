@@ -6,6 +6,7 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import Spinner from '../../components/ui/Spinner';
 import { formatCurrency } from '../../utils/formatters';
 import { IoCreate, IoTrash, IoAdd } from 'react-icons/io5';
+import CustomDatePicker from '../../components/ui/DatePicker';
 
 const emptyDiscount = {
   code: '',
@@ -284,11 +285,11 @@ export default function DiscountManagement() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expires At</label>
-            <input
-              type="date"
+            <CustomDatePicker
               value={formData.expiresAt}
-              onChange={(e) => setFormData({ ...formData, expiresAt: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
+              onChange={(val) => setFormData({ ...formData, expiresAt: val })}
+              placeholder="Select expiry date"
+              minDate={new Date()}
             />
           </div>
 
@@ -298,7 +299,7 @@ export default function DiscountManagement() {
               id="isActive"
               checked={formData.isActive}
               onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <label htmlFor="isActive" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Active
