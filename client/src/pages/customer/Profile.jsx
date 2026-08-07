@@ -8,10 +8,9 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 
 export default function Profile() {
   const { customer, isAuthenticated, logout, getProfile } = useCustomerAuth();
-  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState({ name: '', phone: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -20,7 +19,11 @@ export default function Profile() {
       if (!isAuthenticated) return;
       try {
         await getProfile();
-        setFormData({ name: customer?.name || '', phone: customer?.phone || '' });
+        setFormData({
+          name: customer?.name || '',
+          phone: customer?.phone || '',
+          address: customer?.address || ''
+        });
       } catch (error) {
         console.error('Error loading profile:', error);
       } finally {
@@ -36,11 +39,31 @@ export default function Profile() {
 
   if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
 
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Allow digits, spaces, dashes, parentheses, and plus sign
+    const cleaned = value.replace(/[^0-9\s\-()]+/g, '');
+    setFormData({ ...formData, phone: cleaned });
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setMessage('');
+
+    // Validate phone (strip formatting, check digits only)
+    const cleanPhone = formData.phone.replace(/[\s\-()]/g, '');
+    if (cleanPhone && !/^[0-9]{10,11}$/.test(cleanPhone)) {
+      setMessage('Phone number must be 10-11 digits');
+      setSaving(false);
+      return;
+    }
+
     try {
-      await api.updateCustomerProfile(formData);
+      await api.updateCustomerProfile({
+        name: formData.name,
+        phone: cleanPhone || null,
+        address: formData.address || null
+      });
       await getProfile();
       setEditing(false);
       setMessage('Profile updated successfully');
@@ -51,8 +74,17 @@ export default function Profile() {
     }
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: customer?.name || '',
+      phone: customer?.phone || '',
+      address: customer?.address || ''
+    });
+    setEditing(false);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">My Profile</h1>
 
       {message && (
@@ -96,7 +128,7 @@ export default function Profile() {
                   <Button variant="primary" className="w-full" onClick={handleSave} disabled={saving}>
                     {saving ? 'Saving...' : 'Save Changes'}
                   </Button>
-                  <Button variant="outline" className="w-full" onClick={() => setEditing(false)}>
+                  <Button variant="outline" className="w-full" onClick={handleCancel}>
                     Cancel
                   </Button>
                 </div>
@@ -129,7 +161,19 @@ export default function Profile() {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={handlePhoneChange}
+                    placeholder="0917 123 4567"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">10-11 digits, spaces and dashes allowed</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
+                  <textarea
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    rows={3}
+                    placeholder="Enter your delivery address"
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200"
                   />
                 </div>
@@ -158,7 +202,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Recent Orders */}
+          {/* Account Details */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Account Details</h3>
             <div className="space-y-3 text-sm">
@@ -170,9 +214,13 @@ export default function Profile() {
                 <span className="text-gray-500 dark:text-gray-400">Phone</span>
                 <span className="text-gray-800 dark:text-gray-200">{customer?.phone || 'Not set'}</span>
               </div>
-              <div className="flex justify-between py-2">
+              <div className="flex justify-between py-2 border-b dark:border-gray-700">
                 <span className="text-gray-500 dark:text-gray-400">Address</span>
                 <span className="text-gray-800 dark:text-gray-200">{customer?.address || 'Not set'}</span>
+              </div>
+              <div className="flex justify-between py-2">
+                <span className="text-gray-500 dark:text-gray-400">Member since</span>
+                <span className="text-gray-800 dark:text-gray-200">{formatDate(customer?.createdAt)}</span>
               </div>
             </div>
           </div>

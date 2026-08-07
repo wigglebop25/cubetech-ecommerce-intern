@@ -115,6 +115,7 @@ model Customer {
   email       String    @unique @db.VarChar(255)
   password    String    @db.VarChar(255)
   phone       String?   @db.VarChar(20)
+  address     String?   @db.Text
   wishlist    Wishlist[]
   createdAt   DateTime  @default(now())
 }
