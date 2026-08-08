@@ -26,7 +26,14 @@ const PORT = process.env.PORT || 3001;
 
 // Security middleware
 app.use(helmet()); // Set security HTTP headers
-app.use(cors()); // Enable CORS
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3001',
+    'https://cubetech-ecommerce-intern.vercel.app'
+  ],
+  credentials: true
+})); // Enable CORS for frontend domains
 app.use(apiLimiter); // Rate limiting for all API routes
 
 // Request parsing
