@@ -71,10 +71,6 @@ export default function Cart() {
                 <span>Subtotal ({cartItems.length} items)</span>
                 <span>{formatCurrency(cartTotal)}</span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400 gap-4">
-                <span>Shipping</span>
-                <span className="text-green-600 dark:text-green-400 flex-shrink-0">Calculated at checkout</span>
-              </div>
               <div className="border-t dark:border-gray-600 pt-3 flex justify-between font-bold text-lg">
                 <span className="text-gray-800 dark:text-gray-200">Total</span>
                 <span className="text-blue-600 dark:text-blue-400">{formatCurrency(cartTotal)}</span>
