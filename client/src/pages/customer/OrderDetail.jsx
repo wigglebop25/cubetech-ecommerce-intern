@@ -85,7 +85,7 @@ export default function CustomerOrderDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
         <div>
           <Link to="/orders" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mb-2 inline-block">
             ← Back to My Orders
@@ -174,13 +174,13 @@ export default function CustomerOrderDetail() {
                 <span className="text-gray-500 dark:text-gray-400">Payment</span>
                 <span className="text-gray-800 dark:text-gray-200">{order.paymentMethod}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-2">
                 <span className="text-gray-500 dark:text-gray-400">Email</span>
-                <span className="text-gray-800 dark:text-gray-200">{order.email}</span>
+                <span className="text-gray-800 dark:text-gray-200 min-w-0 text-right break-all">{order.email}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-2">
                 <span className="text-gray-500 dark:text-gray-400">Phone</span>
-                <span className="text-gray-800 dark:text-gray-200">{order.phone}</span>
+                <span className="text-gray-800 dark:text-gray-200 min-w-0 text-right">{order.phone}</span>
               </div>
               {order.address && (
                 <div>

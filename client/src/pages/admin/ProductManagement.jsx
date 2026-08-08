@@ -142,7 +142,7 @@ export default function ProductManagement() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Product Management</h1>
         <Button onClick={openAddModal}>Add Product</Button>
       </div>
@@ -262,7 +262,7 @@ export default function ProductManagement() {
             <textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})}
               rows={3} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price *</label>
               <input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})}

@@ -133,7 +133,7 @@ export default function Profile() {
                 </span>
               </div>
               <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{customer?.name}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{customer?.email}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 break-all">{customer?.email}</p>
             </div>
 
             <div className="space-y-3 text-sm">
@@ -215,7 +215,7 @@ export default function Profile() {
           {/* Quick Links */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link to="/wishlist" className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                 <span className="text-2xl">❤️</span>
                 <div>
@@ -237,17 +237,17 @@ export default function Profile() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Account Details</h3>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between py-2 border-b dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row sm:justify-between py-2 border-b dark:border-gray-700 gap-1">
                 <span className="text-gray-500 dark:text-gray-400">Email</span>
-                <span className="text-gray-800 dark:text-gray-200">{customer?.email}</span>
+                <span className="text-gray-800 dark:text-gray-200 sm:text-right break-all">{customer?.email}</span>
               </div>
               <div className="flex justify-between py-2 border-b dark:border-gray-700">
                 <span className="text-gray-500 dark:text-gray-400">Phone</span>
                 <span className="text-gray-800 dark:text-gray-200">{customer?.phone || 'Not set'}</span>
               </div>
-              <div className="flex justify-between py-2 border-b dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row sm:justify-between py-2 gap-1">
                 <span className="text-gray-500 dark:text-gray-400">Address</span>
-                <span className="text-gray-800 dark:text-gray-200">{customer?.address || 'Not set'}</span>
+                <span className="text-gray-800 dark:text-gray-200 sm:text-right break-words">{customer?.address || 'Not set'}</span>
               </div>
               <div className="flex justify-between py-2">
                 <span className="text-gray-500 dark:text-gray-400">Member since</span>

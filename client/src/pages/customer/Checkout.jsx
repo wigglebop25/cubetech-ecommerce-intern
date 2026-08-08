@@ -263,12 +263,13 @@ export default function Checkout() {
                       value={discountCode}
                       onChange={(e) => { setDiscountCode(e.target.value); setDiscountError(''); }}
                       placeholder="Enter code"
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm dark:bg-gray-700 dark:text-gray-200"
+                      className="flex-1 min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm dark:bg-gray-700 dark:text-gray-200"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
+                      className="flex-shrink-0"
                       onClick={handleApplyDiscount}
                       disabled={applyingDiscount}
                     >

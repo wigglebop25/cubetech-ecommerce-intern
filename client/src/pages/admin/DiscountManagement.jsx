@@ -141,7 +141,7 @@ export default function DiscountManagement() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Discount Management</h1>
         <Button onClick={openAddModal} className="flex items-center gap-2">
           <IoAdd size={18} />
@@ -241,7 +241,7 @@ export default function DiscountManagement() {
             {formErrors.code && <p className="text-red-500 text-sm mt-1">{formErrors.code}</p>}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type *</label>
               <select
@@ -268,7 +268,7 @@ export default function DiscountManagement() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Min Order (₱)</label>
               <input

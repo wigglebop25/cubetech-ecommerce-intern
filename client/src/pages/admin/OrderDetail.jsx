@@ -96,7 +96,7 @@ export default function OrderDetail() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Order {order.id}</h1>
         <Link to="/admin/orders">
           <Button variant="secondary">Back to Orders</Button>
@@ -109,14 +109,14 @@ export default function OrderDetail() {
           {/* Customer Info */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Customer Information</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Name</p>
                 <p className="font-medium text-gray-800 dark:text-gray-200">{order.customerName}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                <p className="font-medium text-gray-800 dark:text-gray-200">{order.email}</p>
+                <p className="font-medium text-gray-800 dark:text-gray-200 break-all">{order.email}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
@@ -129,7 +129,7 @@ export default function OrderDetail() {
             </div>
             <div className="mt-4">
               <p className="text-sm text-gray-500 dark:text-gray-400">Delivery Address</p>
-              <p className="font-medium text-gray-800 dark:text-gray-200">{order.address}</p>
+              <p className="font-medium text-gray-800 dark:text-gray-200 break-words">{order.address}</p>
             </div>
             {order.notes && (
               <div className="mt-4">

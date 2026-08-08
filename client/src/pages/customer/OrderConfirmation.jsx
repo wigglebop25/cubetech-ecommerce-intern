@@ -47,11 +47,11 @@ export default function OrderConfirmation() {
         <p className="text-gray-600 dark:text-gray-400 mb-6">Thank you for your purchase.</p>
 
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6 text-left">
-          <div className="flex justify-between mb-4">
+          <div className="flex justify-between mb-4 gap-4">
             <span className="text-gray-500 dark:text-gray-400">Order Number</span>
-            <span className="font-bold text-gray-800 dark:text-gray-200">{order.id}</span>
+            <span className="font-bold text-gray-800 dark:text-gray-200 truncate">{order.id}</span>
           </div>
-          <div className="flex justify-between mb-4">
+          <div className="flex justify-between mb-4 gap-4">
             <span className="text-gray-500 dark:text-gray-400">Date</span>
             <span className="text-gray-800 dark:text-gray-200">{formatDate(order.orderDate)}</span>
           </div>
@@ -59,7 +59,7 @@ export default function OrderConfirmation() {
             <span className="text-gray-500 dark:text-gray-400">Status</span>
             <StatusBadge status={order.status} />
           </div>
-          <div className="flex justify-between mb-4">
+          <div className="flex justify-between mb-4 gap-4">
             <span className="text-gray-500 dark:text-gray-400">Payment Method</span>
             <span className="text-gray-800 dark:text-gray-200">{order.paymentMethod}</span>
           </div>
@@ -67,9 +67,9 @@ export default function OrderConfirmation() {
           <div className="border-t dark:border-gray-600 pt-4 mt-4">
             <h3 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">Items</h3>
             {order.items?.map((item, idx) => (
-              <div key={idx} className="flex justify-between text-sm mb-2">
-                <span className="text-gray-600 dark:text-gray-400">{item.productName} x{item.quantity}</span>
-                <span className="text-gray-800 dark:text-gray-200">{formatCurrency(item.price * item.quantity)}</span>
+              <div key={idx} className="flex justify-between text-sm mb-2 gap-2">
+                <span className="text-gray-600 dark:text-gray-400 truncate mr-2">{item.productName} x{item.quantity}</span>
+                <span className="text-gray-800 dark:text-gray-200 flex-shrink-0">{formatCurrency(item.price * item.quantity)}</span>
               </div>
             ))}
           </div>
