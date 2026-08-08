@@ -31,8 +31,8 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2 text-sm">
-              <li>Email: admin@cubetech.cloud</li>
-              <li>Phone: +63 995 194 5607</li>
+              <li>Email: cubetech.shop.orders@gmail.com</li>
+              <li>Phone: +63 908 390 9260</li>
               <li>Address: 14th Floor, Latitude Corporate Center Ayala, Cebu City, 6000 Cebu</li>
             </ul>
             <div className="flex gap-4 mt-4">
