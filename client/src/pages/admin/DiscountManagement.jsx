@@ -3,7 +3,7 @@ import { api } from '../../services/api';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonTable } from '../../components/ui/Skeleton';
 import { formatCurrency } from '../../utils/formatters';
 import { IoCreate, IoTrash, IoAdd } from 'react-icons/io5';
 import CustomDatePicker from '../../components/ui/DatePicker';
@@ -127,7 +127,17 @@ export default function DiscountManagement() {
     }
   };
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+          <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg" />
+        </div>
+        <SkeletonTable rows={5} cols={7} />
+      </div>
+    );
+  }
 
   return (
     <div>

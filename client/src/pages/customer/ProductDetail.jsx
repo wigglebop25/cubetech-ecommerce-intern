@@ -7,7 +7,7 @@ import ProductGrid from '../../components/product/ProductGrid';
 import QuantitySelector from '../../components/product/QuantitySelector';
 import Button from '../../components/ui/Button';
 import { StatusBadge } from '../../components/ui/Badge';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonCard } from '../../components/ui/Skeleton';
 import { formatCurrency } from '../../utils/formatters';
 
 export default function ProductDetail() {
@@ -46,7 +46,31 @@ export default function ProductDetail() {
     setTimeout(() => setAddedMessage(''), 2000);
   };
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Skeleton className="h-4 w-48 mb-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <Skeleton className="aspect-square rounded-lg" />
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-8 w-2/3" />
+            <Skeleton className="h-8 w-1/3" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+        <Skeleton className="h-8 w-48 mb-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (

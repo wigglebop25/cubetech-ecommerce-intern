@@ -5,7 +5,7 @@ import ProductCard from '../../components/product/ProductCard';
 import ProductGrid from '../../components/product/ProductGrid';
 import SearchBar from '../../components/ui/SearchBar';
 import EmptyState from '../../components/ui/EmptyState';
-import Spinner from '../../components/ui/Spinner';
+import { SkeletonCard } from '../../components/ui/Skeleton';
 import Pagination from '../../components/ui/Pagination';
 import { useDebounce } from '../../hooks/useDebounce';
 
@@ -104,7 +104,11 @@ export default function Products() {
 
       {/* Results */}
       {loading ? (
-        <Spinner size="lg" className="min-h-[40vh]" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
       ) : products.length > 0 ? (
         <>
           <p className="text-gray-500 dark:text-gray-400 mb-4">

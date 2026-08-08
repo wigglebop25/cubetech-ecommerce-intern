@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import { api } from '../../services/api';
 import ProductCard from '../../components/product/ProductCard';
-import Spinner from '../../components/ui/Spinner';
+import { SkeletonCard } from '../../components/ui/Skeleton';
 import EmptyState from '../../components/ui/EmptyState';
 import Button from '../../components/ui/Button';
 
@@ -31,7 +31,20 @@ export default function Wishlist() {
     return <Navigate to="/login?redirect=/wishlist" replace />;
   }
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const handleWishlistChange = async () => {
     try {

@@ -3,7 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import { api } from '../../services/api';
 import Button from '../../components/ui/Button';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonTable } from '../../components/ui/Skeleton';
 import { StatusBadge } from '../../components/ui/Badge';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -34,7 +34,31 @@ export default function CustomerOrderDetail() {
     return <Navigate to="/login?redirect=/orders" replace />;
   }
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <Skeleton className="h-6 w-32 mb-6" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+            <SkeletonTable rows={3} cols={4} />
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-6 w-24 mt-4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!order) {
     return (

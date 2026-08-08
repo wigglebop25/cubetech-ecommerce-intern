@@ -4,7 +4,7 @@ import { api } from '../../services/api';
 import ProductCard from '../../components/product/ProductCard';
 import ProductGrid from '../../components/product/ProductGrid';
 import Button from '../../components/ui/Button';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonCard } from '../../components/ui/Skeleton';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -29,7 +29,43 @@ export default function Home() {
     fetchData();
   }, []);
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        {/* Hero Skeleton */}
+        <section className="bg-gray-200 dark:bg-gray-700 animate-pulse py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-xl">
+              <Skeleton className="h-12 w-3/4 mb-4" />
+              <Skeleton className="h-6 w-full mb-2" />
+              <Skeleton className="h-6 w-2/3 mb-8" />
+              <Skeleton className="h-12 w-32" />
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Skeleton */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <Skeleton className="h-8 w-48 mx-auto mb-8" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-lg" />
+            ))}
+          </div>
+        </section>
+
+        {/* Products Skeleton */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <Skeleton className="h-8 w-48 mb-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div>

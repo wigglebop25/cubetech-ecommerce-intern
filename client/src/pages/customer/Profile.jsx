@@ -3,7 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import { api } from '../../services/api';
 import Button from '../../components/ui/Button';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton } from '../../components/ui/Skeleton';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
 export default function Profile() {
@@ -37,7 +37,36 @@ export default function Profile() {
     return <Navigate to="/login?redirect=/profile" replace />;
   }
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <Skeleton className="h-8 w-48 mb-6" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div className="flex flex-col items-center mb-4">
+              <Skeleton className="w-20 h-20 rounded-full mb-3" />
+              <Skeleton className="h-6 w-32 mb-2" />
+              <Skeleton className="h-4 w-40" />
+            </div>
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+            <Skeleton className="h-10 w-full mt-6" />
+          </div>
+          <div className="md:col-span-2 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <Skeleton className="h-6 w-32 mb-4" />
+              <div className="grid grid-cols-2 gap-4">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;

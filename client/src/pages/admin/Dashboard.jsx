@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { formatCurrency } from '../../utils/formatters';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonTable } from '../../components/ui/Skeleton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { IoCart, IoList, IoTime, IoCheckmarkCircle, IoPeople, IoCash, IoWarning } from 'react-icons/io5';
 
@@ -36,7 +36,27 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <Skeleton className="h-8 w-48 mb-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <div className="flex items-center gap-4">
+                <Skeleton className="w-12 h-12 rounded-lg" />
+                <div className="flex-1">
+                  <Skeleton className="h-4 w-24 mb-2" />
+                  <Skeleton className="h-8 w-16" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <SkeletonTable rows={5} cols={5} />
+      </div>
+    );
+  }
 
   const summaryCards = [
     { label: 'Total Products', value: stats?.totalProducts || 0, icon: IoCart, color: 'bg-blue-500' },

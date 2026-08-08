@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useData } from '../../context/DataContext';
-import Spinner from '../../components/ui/Spinner';
+import { SkeletonTable } from '../../components/ui/Skeleton';
 import { StatusBadge } from '../../components/ui/Badge';
 import { formatCurrency } from '../../utils/formatters';
 
@@ -12,7 +12,14 @@ export default function CustomerManagement() {
     fetchCustomers().then(() => setLoading(false));
   }, [fetchCustomers]);
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 animate-pulse rounded mb-6" />
+        <SkeletonTable rows={8} cols={6} />
+      </div>
+    );
+  }
 
   return (
     <div>

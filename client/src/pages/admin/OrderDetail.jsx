@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useData } from '../../context/DataContext';
 import Button from '../../components/ui/Button';
-import Spinner from '../../components/ui/Spinner';
+import { Skeleton, SkeletonTable } from '../../components/ui/Skeleton';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { StatusBadge } from '../../components/ui/Badge';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -51,7 +51,37 @@ export default function OrderDetail() {
     }
   };
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <Skeleton className="h-8 w-48 mb-6" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <Skeleton className="h-6 w-48 mb-4" />
+              <div className="grid grid-cols-2 gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i}>
+                    <Skeleton className="h-4 w-20 mb-2" />
+                    <Skeleton className="h-5 w-32" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <SkeletonTable rows={3} cols={4} />
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <Skeleton className="h-6 w-32 mb-4" />
+              <Skeleton className="h-6 w-24 mb-4" />
+              <Skeleton className="h-4 w-40 mb-4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!order) {
     return (

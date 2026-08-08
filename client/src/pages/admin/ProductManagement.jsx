@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import SearchBar from '../../components/ui/SearchBar';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import Spinner from '../../components/ui/Spinner';
+import { SkeletonTable } from '../../components/ui/Skeleton';
 import { StatusBadge } from '../../components/ui/Badge';
 import { formatCurrency } from '../../utils/formatters';
 import { PRODUCT_STATUSES } from '../../utils/constants';
@@ -128,7 +128,17 @@ export default function ProductManagement() {
     }
   };
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+          <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg" />
+        </div>
+        <SkeletonTable rows={10} cols={7} />
+      </div>
+    );
+  }
 
   return (
     <div>

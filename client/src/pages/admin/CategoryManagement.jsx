@@ -3,7 +3,7 @@ import { useData } from '../../context/DataContext';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import Spinner from '../../components/ui/Spinner';
+import { SkeletonTable } from '../../components/ui/Skeleton';
 import { validateRequired } from '../../utils/validators';
 import { IoCreate, IoTrash } from 'react-icons/io5';
 
@@ -81,7 +81,17 @@ export default function CategoryManagement() {
     }
   };
 
-  if (loading) return <Spinner size="lg" className="min-h-[60vh]" />;
+  if (loading) {
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+          <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg" />
+        </div>
+        <SkeletonTable rows={5} cols={4} />
+      </div>
+    );
+  }
 
   return (
     <div>
