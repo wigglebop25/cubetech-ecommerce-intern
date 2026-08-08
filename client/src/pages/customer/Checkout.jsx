@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import { api } from '../../services/api';
 import Button from '../../components/ui/Button';
 import { formatCurrency } from '../../utils/formatters';
@@ -10,6 +11,11 @@ import { validateRequired, validateEmail, validatePhone } from '../../utils/vali
 export default function Checkout() {
   const navigate = useNavigate();
   const { cartItems, cartTotal, clearCart } = useCart();
+  const { isAuthenticated } = useCustomerAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login?redirect=/checkout" replace />;
+  }
 
   const [formData, setFormData] = useState({
     customerName: '',

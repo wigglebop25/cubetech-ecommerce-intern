@@ -8,14 +8,15 @@ const OrderService = require('../services/orderService');
 const DiscountService = require('../services/discountService');
 const OrderController = require('../controllers/orderController');
 const { authenticate, authorize } = require('../middleware/auth');
+const { customerAuth } = require('../middleware/customerAuth');
 
 // Dependency Injection: repositories → services → controller
 const discountService = new DiscountService(discountRepository);
 const orderService = new OrderService(orderRepository, productRepository, orderStatusRepository, discountService);
 const orderController = new OrderController(orderService);
 
-// Public routes
-router.post('/', (req, res, next) => orderController.create(req, res, next));
+// Protected routes (require customer authentication)
+router.post('/', customerAuth, (req, res, next) => orderController.create(req, res, next));
 
 // Admin-only routes
 router.get('/export', authenticate, authorize(['admin']), (req, res, next) => orderController.export(req, res, next));
