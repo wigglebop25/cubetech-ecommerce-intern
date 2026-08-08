@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { CustomerAuthProvider } from './context/CustomerAuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import ScrollToTop from './components/ui/ScrollToTop';
 
 // Layouts
 import AdminLayout from './components/layout/AdminLayout';
@@ -36,6 +37,7 @@ import DiscountManagement from './pages/admin/DiscountManagement';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <ThemeProvider>
         <DataProvider>
           <CartProvider>
