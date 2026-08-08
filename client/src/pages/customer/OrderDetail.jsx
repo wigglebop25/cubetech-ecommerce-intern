@@ -160,6 +160,12 @@ export default function CustomerOrderDetail() {
                   <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.shippingCost)}</span>
                 </div>
               )}
+              {order.discount && (
+                <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                  <span>Discount ({order.discount.code})</span>
+                  <span>-{formatCurrency(order.subtotal * order.discount.value / 100)}</span>
+                </div>
+              )}
               <div className="border-t dark:border-gray-600 pt-3 flex justify-between font-bold text-lg">
                 <span className="text-gray-800 dark:text-gray-200">Total</span>
                 <span className="text-blue-600 dark:text-blue-400">{formatCurrency(order.total)}</span>

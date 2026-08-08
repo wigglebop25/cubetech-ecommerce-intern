@@ -20,11 +20,11 @@ class OrderRepository {
     return { orders, total };
   }
 
-  // Get single order by ID with items
+  // Get single order by ID with items and discount
   async findById(id) {
     return prisma.order.findUnique({
       where: { id },
-      include: { items: true }
+      include: { items: true, discount: true }
     });
   }
 
