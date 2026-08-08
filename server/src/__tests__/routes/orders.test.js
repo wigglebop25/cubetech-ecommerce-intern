@@ -1,3 +1,11 @@
+// Mock email service to avoid sending actual emails during tests
+jest.mock('../../services/emailService', () => ({
+  sendOrderConfirmation: jest.fn().mockResolvedValue(true),
+  sendStatusUpdate: jest.fn().mockResolvedValue(true),
+  sendOrderCancelled: jest.fn().mockResolvedValue(true),
+  sendWelcome: jest.fn().mockResolvedValue(true),
+}));
+
 const request = require('supertest');
 const express = require('express');
 const orderRoutes = require('../../routes/orders');
@@ -5,6 +13,7 @@ const authRoutes = require('../../routes/auth');
 const { prisma } = require('../../db');
 const errorHandler = require('../../middleware/errorHandler');
 const argon2 = require('argon2');
+const { generateCustomerToken } = require('../../utils/customerJwt');
 
 const app = express();
 app.use(express.json());
@@ -15,6 +24,7 @@ app.use(errorHandler);
 describe('Order Routes', () => {
   let product;
   let adminToken;
+  let customerToken;
 
   beforeEach(async () => {
     // Create category and product
@@ -36,6 +46,23 @@ describe('Order Routes', () => {
       .send({ username: 'admin', password: 'admin123' });
 
     adminToken = loginRes.body.accessToken;
+
+    // Create a customer directly and generate token (skip registration to avoid email sending)
+    const customerPassword = await argon2.hash('customer123');
+    const customer = await prisma.customer.create({
+      data: {
+        name: 'Test Customer',
+        email: 'customer@test.com',
+        password: customerPassword,
+        phone: '09171234567'
+      }
+    });
+
+    customerToken = generateCustomerToken({
+      id: customer.id,
+      email: customer.email,
+      role: 'customer'
+    });
   });
 
   describe('GET /api/orders', () => {
@@ -183,6 +210,7 @@ describe('Order Routes', () => {
     it('creates a new order without decrementing stock', async () => {
       const res = await request(app)
         .post('/api/orders')
+        .set('Authorization', `Bearer ${customerToken}`)
         .send({
           customerName: 'Maria',
           email: 'maria@test.com',
@@ -234,6 +262,7 @@ describe('Order Routes', () => {
       // Create order
       const orderRes = await request(app)
         .post('/api/orders')
+        .set('Authorization', `Bearer ${customerToken}`)
         .send({
           customerName: 'Maria',
           email: 'maria@test.com',
