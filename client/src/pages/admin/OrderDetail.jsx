@@ -184,7 +184,7 @@ export default function OrderDetail() {
               {order.discount && (
                 <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
                   <span>Discount ({order.discount.code})</span>
-                  <span>-{formatCurrency(order.subtotal * order.discount.value / 100)}</span>
+                  <span>-{formatCurrency(order.discount.type === 'percentage' ? (order.subtotal * order.discount.value / 100) : order.discount.value)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg border-t dark:border-gray-600 pt-2">
