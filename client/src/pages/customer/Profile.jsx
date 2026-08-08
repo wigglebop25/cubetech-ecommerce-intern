@@ -57,7 +57,7 @@ export default function Profile() {
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <Skeleton className="h-6 w-32 mb-4" />
-              <div className="grid grid-cols-2 gap-4">
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
               </div>

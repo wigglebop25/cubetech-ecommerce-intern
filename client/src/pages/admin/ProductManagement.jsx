@@ -182,9 +182,9 @@ export default function ProductManagement() {
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Image</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Category</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden lg:table-cell">Category</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Stock</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Stock</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
                 <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
               </tr>
@@ -196,9 +196,9 @@ export default function ProductManagement() {
                     <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded" />
                   </td>
                   <td className="px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-200">{product.name}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{product.category?.name}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">{product.category?.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(product.price)}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 hidden md:table-cell">
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-gray-800 dark:text-gray-200">{product.stock}</span>
                       {product.stock < 10 && product.stock > 0 && (

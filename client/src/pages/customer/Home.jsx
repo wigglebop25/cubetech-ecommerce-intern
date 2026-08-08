@@ -47,7 +47,7 @@ export default function Home() {
         {/* Categories Skeleton */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Skeleton className="h-8 w-48 mx-auto mb-8" />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="h-24 rounded-lg" />
             ))}
@@ -73,7 +73,7 @@ export default function Home() {
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="max-w-xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
               Welcome to CubeTech Shop
             </h1>
             <p className="text-blue-100 text-lg mb-8">
@@ -97,7 +97,7 @@ export default function Home() {
             <Link
               key={category.id}
               to={`/products?category=${category.name}`}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 text-center hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 transition-all cursor-pointer"
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 md:p-6 text-center hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500 transition-all cursor-pointer"
             >
               <h3 className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{category.description}</p>

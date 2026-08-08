@@ -32,9 +32,9 @@ export default function CustomerManagement() {
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Email</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Phone</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Orders</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Total Spent</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Phone</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Orders</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden lg:table-cell">Total Spent</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
               </tr>
             </thead>
@@ -43,9 +43,9 @@ export default function CustomerManagement() {
                 <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                   <td className="px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-200">{customer.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{customer.email}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{customer.phone}</td>
-                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{customer.orderCount}</td>
-                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(customer.totalSpent)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">{customer.phone}</td>
+                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 hidden sm:table-cell">{customer.orderCount}</td>
+                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 hidden lg:table-cell">{formatCurrency(customer.totalSpent)}</td>
                   <td className="px-4 py-3"><StatusBadge status={customer.status} /></td>
                 </tr>
               ))}

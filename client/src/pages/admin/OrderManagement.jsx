@@ -159,9 +159,9 @@ export default function OrderManagement() {
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Order #</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Customer</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Date</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Date</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Total</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Payment</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden lg:table-cell">Payment</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
                 <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
               </tr>
@@ -171,9 +171,9 @@ export default function OrderManagement() {
                 <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                   <td className="px-4 py-3 text-sm font-medium text-blue-600 dark:text-blue-400">{order.id}</td>
                   <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{order.customerName}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{formatDate(order.orderDate)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">{formatDate(order.orderDate)}</td>
                   <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(order.total)}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{order.paymentMethod}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">{order.paymentMethod}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <select

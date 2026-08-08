@@ -54,7 +54,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-1 rounded-lg text-sm font-medium cursor-pointer ${
+            className={`px-3 py-2 rounded-lg text-sm font-medium cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center ${
               currentPage === page
                 ? 'bg-blue-600 text-white'
                 : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'

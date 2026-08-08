@@ -103,7 +103,7 @@ export default function Dashboard() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Category</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Category</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Stock</th>
                   <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Action</th>
@@ -122,7 +122,7 @@ export default function Dashboard() {
                         <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{product.name}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{product.category?.name || 'N/A'}</td>
+                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">{product.category?.name || 'N/A'}</td>
                     <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(product.price)}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -156,7 +156,7 @@ export default function Dashboard() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Order #</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Customer</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Customer</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Total</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
                 </tr>
@@ -165,7 +165,7 @@ export default function Dashboard() {
                 {salesData.map(order => (
                   <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                     <td className="px-4 py-3 text-sm font-medium text-blue-600 dark:text-blue-400">{order.id}</td>
-                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{order.customerName}</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 hidden sm:table-cell">{order.customerName}</td>
                     <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">{formatCurrency(order.total)}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

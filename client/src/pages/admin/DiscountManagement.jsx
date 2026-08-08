@@ -158,8 +158,8 @@ export default function DiscountManagement() {
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Code</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Type</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Value</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Min Order</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Uses</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Min Order</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden lg:table-cell">Uses</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
                 <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
               </tr>
@@ -176,10 +176,10 @@ export default function DiscountManagement() {
                   <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">
                     {discount.type === 'percentage' ? `${discount.value}%` : formatCurrency(discount.value)}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                     {discount.minOrder ? formatCurrency(discount.minOrder) : 'None'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200">
+                  <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-200 hidden lg:table-cell">
                     {discount.usedCount}/{discount.maxUses || '∞'}
                   </td>
                   <td className="px-4 py-3">

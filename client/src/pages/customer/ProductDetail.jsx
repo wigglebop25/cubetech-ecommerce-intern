@@ -116,7 +116,7 @@ export default function ProductDetail() {
             {product.category?.name}
           </span>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mt-3 mb-2">{product.name}</h1>
-          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">{formatCurrency(product.price)}</p>
+          <p className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">{formatCurrency(product.price)}</p>
 
           <div className="flex items-center gap-3 mb-4">
             <StatusBadge status={isOutOfStock ? 'Out_of_Stock' : 'Active'} />

@@ -114,6 +114,7 @@ export default function CustomerOrderDetail() {
           {/* Items */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Items</h2>
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -134,6 +135,7 @@ export default function CustomerOrderDetail() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
 

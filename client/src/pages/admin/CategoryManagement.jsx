@@ -101,6 +101,7 @@ export default function CategoryManagement() {
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
@@ -130,6 +131,7 @@ export default function CategoryManagement() {
             ))}
           </tbody>
         </table>
+        </div>
         {categories.length === 0 && (
           <p className="text-center text-gray-500 dark:text-gray-400 py-8">No categories found</p>
         )}

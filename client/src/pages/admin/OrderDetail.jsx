@@ -142,6 +142,7 @@ export default function OrderDetail() {
           {/* Items */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Ordered Products</h2>
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -162,6 +163,7 @@ export default function OrderDetail() {
                 ))}
               </tbody>
             </table>
+            </div>
             <div className="border-t dark:border-gray-600 mt-4 pt-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
