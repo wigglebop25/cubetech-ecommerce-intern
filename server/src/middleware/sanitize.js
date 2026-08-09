@@ -21,6 +21,10 @@ function sanitizeQuery(req, res, next) {
 function sanitizeObject(obj) {
   for (const key in obj) {
     if (typeof obj[key] === 'string') {
+      // Skip sanitization for URL fields to prevent encoding forward slashes
+      if (key.toLowerCase().includes('url') || key.toLowerCase().includes('image')) {
+        continue;
+      }
       // Remove potential XSS vectors
       obj[key] = obj[key]
         .replace(/</g, '&lt;')

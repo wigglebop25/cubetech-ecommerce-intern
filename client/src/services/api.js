@@ -1,9 +1,12 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
-const getHeaders = (includeAuth = false) => {
+const getHeaders = (authType = null) => {
   const headers = { 'Content-Type': 'application/json' };
-  if (includeAuth) {
+  if (authType === 'admin') {
     const token = sessionStorage.getItem('adminToken');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+  } else if (authType === 'customer') {
+    const token = localStorage.getItem('customerToken');
     if (token) headers['Authorization'] = `Bearer ${token}`;
   }
   return headers;
@@ -26,43 +29,43 @@ export const api = {
     fetch(`${API_URL}/products/${id}`).then(handleResponse),
   
   createProduct: (data) => 
-    fetch(`${API_URL}/products`, { method: 'POST', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/products`, { method: 'POST', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
   
   updateProduct: (id, data) => 
-    fetch(`${API_URL}/products/${id}`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/products/${id}`, { method: 'PUT', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
   
   deleteProduct: (id) => 
-    fetch(`${API_URL}/products/${id}`, { method: 'DELETE', headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/products/${id}`, { method: 'DELETE', headers: getHeaders('admin') }).then(handleResponse),
 
   // Categories
   getCategories: () => 
     fetch(`${API_URL}/categories`).then(handleResponse),
   
   createCategory: (data) => 
-    fetch(`${API_URL}/categories`, { method: 'POST', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/categories`, { method: 'POST', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
   
   updateCategory: (id, data) => 
-    fetch(`${API_URL}/categories/${id}`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/categories/${id}`, { method: 'PUT', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
   
   deleteCategory: (id) => 
-    fetch(`${API_URL}/categories/${id}`, { method: 'DELETE', headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/categories/${id}`, { method: 'DELETE', headers: getHeaders('admin') }).then(handleResponse),
 
   // Orders
   getOrders: (params = '') => 
-    fetch(`${API_URL}/orders${params ? `?${params}` : ''}`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/orders${params ? `?${params}` : ''}`, { headers: getHeaders('admin') }).then(handleResponse),
   
   getOrder: (id) => 
-    fetch(`${API_URL}/orders/${id}`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/orders/${id}`, { headers: getHeaders('admin') }).then(handleResponse),
   
   createOrder: (data) => 
-    fetch(`${API_URL}/orders`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/orders`, { method: 'POST', headers: getHeaders('customer'), body: JSON.stringify(data) }).then(handleResponse),
   
   updateOrderStatus: (id, status) => 
-    fetch(`${API_URL}/orders/${id}/status`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify({ status }) }).then(handleResponse),
+    fetch(`${API_URL}/orders/${id}/status`, { method: 'PUT', headers: getHeaders('admin'), body: JSON.stringify({ status }) }).then(handleResponse),
 
   // Customers
   getCustomers: () => 
-    fetch(`${API_URL}/customers`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/customers`, { headers: getHeaders('admin') }).then(handleResponse),
 
   // Auth
   login: (data) => 
@@ -70,11 +73,11 @@ export const api = {
 
   // Stats
   getStats: () => 
-    fetch(`${API_URL}/stats`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/stats`, { headers: getHeaders('admin') }).then(handleResponse),
 
   // Analytics
   getDashboard: () => 
-    fetch(`${API_URL}/analytics/dashboard`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/analytics/dashboard`, { headers: getHeaders('admin') }).then(handleResponse),
 
   // Health
   getHealth: () => 
@@ -130,19 +133,19 @@ export const api = {
 
   // Discount
   getDiscounts: () => 
-    fetch(`${API_URL}/discounts`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/discounts`, { headers: getHeaders('admin') }).then(handleResponse),
 
   getDiscount: (id) => 
-    fetch(`${API_URL}/discounts/${id}`, { headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/discounts/${id}`, { headers: getHeaders('admin') }).then(handleResponse),
 
   createDiscount: (data) => 
-    fetch(`${API_URL}/discounts`, { method: 'POST', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/discounts`, { method: 'POST', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
 
   updateDiscount: (id, data) => 
-    fetch(`${API_URL}/discounts/${id}`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify(data) }).then(handleResponse),
+    fetch(`${API_URL}/discounts/${id}`, { method: 'PUT', headers: getHeaders('admin'), body: JSON.stringify(data) }).then(handleResponse),
 
   deleteDiscount: (id) => 
-    fetch(`${API_URL}/discounts/${id}`, { method: 'DELETE', headers: getHeaders(true) }).then(handleResponse),
+    fetch(`${API_URL}/discounts/${id}`, { method: 'DELETE', headers: getHeaders('admin') }).then(handleResponse),
 
   validateDiscount: (code, orderTotal) => 
     fetch(`${API_URL}/discounts/validate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, orderTotal }) }).then(handleResponse),
