@@ -23,6 +23,11 @@ class DiscountService {
 
   // Create discount with validation
   async createDiscount(data) {
+    // Convert date string to ISO-8601 DateTime if needed
+    if (data.expiresAt && typeof data.expiresAt === 'string' && !data.expiresAt.includes('T')) {
+      data.expiresAt = data.expiresAt + 'T00:00:00.000Z';
+    }
+
     // Validate discount type
     if (!['percentage', 'fixed'].includes(data.type)) {
       const error = new Error('Discount type must be "percentage" or "fixed"');
@@ -50,6 +55,11 @@ class DiscountService {
 
   // Update discount
   async updateDiscount(id, data) {
+    // Convert date string to ISO-8601 DateTime if needed
+    if (data.expiresAt && typeof data.expiresAt === 'string' && !data.expiresAt.includes('T')) {
+      data.expiresAt = data.expiresAt + 'T00:00:00.000Z';
+    }
+
     await this.getDiscountById(id);
     return this.discountRepository.update(id, data);
   }

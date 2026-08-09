@@ -22,6 +22,7 @@ const analyticsRoutes = require('./routes/analytics');
 const customerOrderRoutes = require('./routes/customerOrders');
 
 const app = express();
+app.set('trust proxy', 1); // Trust Cloudflare tunnel proxy
 const PORT = process.env.PORT || 3001;
 
 // Security middleware
