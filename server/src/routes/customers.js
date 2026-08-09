@@ -5,34 +5,44 @@ const orderRepository = require('../repositories/orderRepository');
 const CustomerAuthService = require('../services/customerAuthService');
 const CustomerAuthController = require('../controllers/customerAuthController');
 const { customerAuth } = require('../middleware/customerAuth');
+const { prisma } = require('../db');
 
 // Dependency Injection: repository → service → controller
 const customerAuthService = new CustomerAuthService(customerRepository);
 const customerAuthController = new CustomerAuthController(customerAuthService);
 
-// GET /api/customers - get all customers derived from orders (admin endpoint)
+// GET /api/customers - get all customers from Customer table enriched with order data (admin endpoint)
 router.get('/', async (req, res, next) => {
   try {
-    const { orders } = await orderRepository.findAll({}, {}, {});
-
-    // Group orders by email to derive customers
-    const customerMap = {};
-    orders.forEach(order => {
-      if (!customerMap[order.email]) {
-        customerMap[order.email] = {
-          name: order.customerName,
-          email: order.email,
-          phone: order.phone,
-          orderCount: 0,
-          totalSpent: 0,
-          status: 'Active'
-        };
-      }
-      customerMap[order.email].orderCount += 1;
-      customerMap[order.email].totalSpent += parseFloat(order.total);
+    // Get all customers from Customer table
+    const allCustomers = await prisma.customer.findMany({
+      select: { id: true, name: true, email: true, phone: true, createdAt: true }
     });
 
-    res.json(Object.values(customerMap));
+    // Get orders to calculate orderCount and totalSpent
+    const { orders } = await orderRepository.findAll({}, {}, {});
+
+    // Build order stats by email
+    const orderStats = {};
+    orders.forEach(order => {
+      if (!orderStats[order.email]) {
+        orderStats[order.email] = { orderCount: 0, totalSpent: 0 };
+      }
+      orderStats[order.email].orderCount += 1;
+      orderStats[order.email].totalSpent += parseFloat(order.total);
+    });
+
+    // Merge customers with order stats
+    const customers = allCustomers.map(customer => ({
+      name: customer.name,
+      email: customer.email,
+      phone: customer.phone,
+      orderCount: orderStats[customer.email]?.orderCount || 0,
+      totalSpent: orderStats[customer.email]?.totalSpent || 0,
+      status: 'Active'
+    }));
+
+    res.json(customers);
   } catch (error) {
     next(error);
   }

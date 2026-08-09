@@ -18,6 +18,17 @@ describe('Customer Routes', () => {
       data: { name: 'T-Shirt', image: 'img.jpg', categoryId: category.id, price: 500, stock: 50 }
     });
 
+    // Create a customer in the Customer table
+    await prisma.customer.create({
+      data: {
+        name: 'Juan Dela Cruz',
+        email: 'juan@test.com',
+        password: 'hashedpassword',
+        phone: '09171234567'
+      }
+    });
+
+    // Create an order for the customer
     await prisma.order.create({
       data: {
         id: 'ORD-001',
@@ -36,11 +47,12 @@ describe('Customer Routes', () => {
   });
 
   describe('GET /api/customers', () => {
-    it('returns customers derived from orders', async () => {
+    it('returns all customers from Customer table with order stats', async () => {
       const res = await request(app).get('/api/customers');
       expect(res.status).toBe(200);
       expect(res.body).toHaveLength(1);
       expect(res.body[0].name).toBe('Juan Dela Cruz');
+      expect(res.body[0].email).toBe('juan@test.com');
       expect(res.body[0].orderCount).toBe(1);
       expect(res.body[0].totalSpent).toBe(500);
     });
