@@ -33,10 +33,10 @@ export default function Home() {
     return (
       <div>
         {/* Hero Skeleton */}
-        <section className="bg-gray-200 dark:bg-gray-700 animate-pulse py-20">
+        <section className="bg-gray-200 dark:bg-gray-700 animate-pulse min-h-[80vh] flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-xl">
-              <Skeleton className="h-12 w-3/4 mb-4" />
+              <Skeleton className="h-14 w-3/4 mb-4" />
               <Skeleton className="h-6 w-full mb-2" />
               <Skeleton className="h-6 w-2/3 mb-8" />
               <Skeleton className="h-12 w-32" />
@@ -71,9 +71,9 @@ export default function Home() {
     <div>
       {/* Hero Banner */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center">
           <div className="max-w-xl">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               Welcome to CubeTech Shop
             </h1>
             <p className="text-blue-100 text-lg mb-8">
