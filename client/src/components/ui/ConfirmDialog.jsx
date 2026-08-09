@@ -1,7 +1,7 @@
 import Modal from './Modal';
 import Button from './Button';
 
-export default function ConfirmDialog({ isOpen, onClose, onConfirm, title = 'Confirm Action', message = 'Are you sure you want to proceed?' }) {
+export default function ConfirmDialog({ isOpen, onClose, onConfirm, title = 'Confirm Action', message = 'Are you sure you want to proceed?', confirmText = 'Delete' }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
@@ -10,7 +10,7 @@ export default function ConfirmDialog({ isOpen, onClose, onConfirm, title = 'Con
           Cancel
         </Button>
         <Button variant="danger" onClick={onConfirm}>
-          Delete
+          {confirmText}
         </Button>
       </div>
     </Modal>

@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import QuantitySelector from '../../components/product/QuantitySelector';
 import Button from '../../components/ui/Button';
 import EmptyState from '../../components/ui/EmptyState';
+import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { formatCurrency } from '../../utils/formatters';
 
 export default function Cart() {
   const { cartItems, cartTotal, updateQuantity, removeFromCart } = useCart();
+  const [removeItem, setRemoveItem] = useState(null);
 
   if (cartItems.length === 0) {
     return (
@@ -47,7 +50,7 @@ export default function Cart() {
                   />
                 </div>
                 <button
-                  onClick={() => removeFromCart(item.productId)}
+                  onClick={() => setRemoveItem(item)}
                   className="text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 mt-2 cursor-pointer transition-colors"
                 >
                   Remove
@@ -87,6 +90,18 @@ export default function Cart() {
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={!!removeItem}
+        onClose={() => setRemoveItem(null)}
+        onConfirm={() => {
+          removeFromCart(removeItem.productId);
+          setRemoveItem(null);
+        }}
+        title="Remove Item"
+        message={`Are you sure you want to remove "${removeItem?.name}" from your cart?`}
+        confirmText="Remove"
+      />
     </div>
   );
 }
