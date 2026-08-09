@@ -74,6 +74,31 @@ export default function OrderConfirmation() {
             ))}
           </div>
 
+          <div className="border-t dark:border-gray-600 pt-4 mt-4 space-y-2">
+            <div className="flex justify-between">
+              <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
+              <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.subtotal)}</span>
+            </div>
+            {order.tax > 0 && (
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Tax (12% VAT)</span>
+                <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.tax)}</span>
+              </div>
+            )}
+            {order.shippingCost > 0 && (
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Shipping</span>
+                <span className="text-gray-800 dark:text-gray-200">{formatCurrency(order.shippingCost)}</span>
+              </div>
+            )}
+            {order.discount && (
+              <div className="flex justify-between text-green-600 dark:text-green-400">
+                <span>Discount ({order.discount.code})</span>
+                <span>-{formatCurrency(order.discount.type === 'percentage' ? (order.subtotal * order.discount.value / 100) : order.discount.value)}</span>
+              </div>
+            )}
+          </div>
+
           <div className="border-t dark:border-gray-600 pt-4 mt-4 flex justify-between font-bold text-lg">
             <span className="text-gray-800 dark:text-gray-200">Total</span>
             <span className="text-blue-600 dark:text-blue-400">{formatCurrency(order.total)}</span>
