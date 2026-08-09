@@ -40,7 +40,7 @@ export default function Dashboard() {
     return (
       <div>
         <Skeleton className="h-8 w-48 mb-6" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="flex items-center gap-4">
@@ -72,7 +72,7 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Dashboard</h1>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {summaryCards.map(card => (
           <div key={card.label} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center gap-4">
@@ -80,8 +80,8 @@ export default function Dashboard() {
                 <card.icon size={24} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">{card.value}</p>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
+                <p className="whitespace-nowrap text-sm sm:text-2xl font-bold text-gray-800 dark:text-gray-200">{card.value}</p>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function Dashboard() {
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
+                  <th className="px-4 py-3 pl-16 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Category</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Stock</th>
