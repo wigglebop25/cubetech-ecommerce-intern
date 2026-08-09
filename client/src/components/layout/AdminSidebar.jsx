@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -11,7 +12,10 @@ import {
   IoStorefront,
   IoSunny,
   IoMoon,
-  IoClose
+  IoClose,
+  IoMenu,
+  IoChevronBack,
+  IoChevronForward
 } from 'react-icons/io5';
 
 const navItems = [
@@ -26,6 +30,7 @@ const navItems = [
 export default function AdminSidebar({ isOpen, onClose }) {
   const { logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <>
@@ -36,13 +41,16 @@ export default function AdminSidebar({ isOpen, onClose }) {
 
       {/* Sidebar */}
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white min-h-screen flex flex-col
-        transform transition-transform duration-300 ease-in-out
+        fixed md:static inset-y-0 left-0 z-50 ${collapsed ? 'w-16' : 'w-64'} bg-gray-900 text-white min-h-screen flex flex-col
+        transform transition-all duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Brand */}
         <div className="p-4 border-b border-gray-800 flex items-center justify-between">
-          <h2 className="text-lg font-bold">CubeTech Admin</h2>
+          {!collapsed && <h2 className="text-lg font-bold">CubeTech Admin</h2>}
+          <button onClick={() => setCollapsed(!collapsed)} className="p-1 text-gray-400 hover:text-white cursor-pointer hidden md:block">
+            {collapsed ? <IoChevronForward size={20} /> : <IoChevronBack size={20} />}
+          </button>
           <button onClick={onClose} className="md:hidden p-1 text-gray-400 hover:text-white cursor-pointer">
             <IoClose size={20} />
           </button>
@@ -64,7 +72,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
               }
             >
               <item.icon size={18} />
-              {item.label}
+              {!collapsed && <span>{item.label}</span>}
             </NavLink>
           ))}
         </nav>
@@ -76,21 +84,21 @@ export default function AdminSidebar({ isOpen, onClose }) {
             className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors w-full cursor-pointer mb-2"
           >
             {isDark ? <IoSunny size={18} /> : <IoMoon size={18} />}
-            {isDark ? 'Light Mode' : 'Dark Mode'}
+            {!collapsed && <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
           </button>
           <NavLink
             to="/"
             className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors mb-2"
           >
             <IoStorefront size={18} />
-            View Store
+            {!collapsed && <span>View Store</span>}
           </NavLink>
           <button
             onClick={logout}
             className="flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-lg transition-colors w-full cursor-pointer"
           >
             <IoLogOut size={18} />
-            Logout
+            {!collapsed && <span>Logout</span>}
           </button>
         </div>
       </aside>
