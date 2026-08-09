@@ -52,7 +52,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
             {collapsed ? <IoChevronForward size={20} /> : <IoChevronBack size={20} />}
           </button>
           <button onClick={onClose} className="md:hidden p-1 text-gray-400 hover:text-white cursor-pointer">
-            <IoClose size={20} />
+            <IoChevronBack size={20} />
           </button>
         </div>
 

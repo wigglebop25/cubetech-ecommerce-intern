@@ -124,8 +124,9 @@ class AnalyticsService {
     
     const averageOrderValue = totalOrders > 0 ? totalRevenue / completedOrders : 0;
     
-    // Recent orders (last 5)
-    const recentOrders = orders.slice(0, 5);
+    // Recent orders (sorted by most recent first)
+    const recentOrders = orders
+      .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
     
     return {
       totalOrders,
