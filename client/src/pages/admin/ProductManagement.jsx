@@ -40,7 +40,7 @@ export default function ProductManagement() {
 
   useEffect(() => {
     const loadData = async () => {
-      await Promise.all([fetchProducts(), fetchCategories()]);
+      await Promise.all([fetchProducts('limit=100'), fetchCategories()]);
       setLoading(false);
     };
     loadData();
