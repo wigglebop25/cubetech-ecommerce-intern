@@ -39,6 +39,9 @@ GET /api/products
 - `category` (string) — Filter by category name
 - `status` (string) — Filter by status (Active, Inactive, Out_of_Stock)
 - `search` (string) — Search by product name
+- `sort` (string) — Sort by price (asc, desc)
+- `page` (number) — Page number
+- `limit` (number) — Items per page
 
 **curl:**
 
@@ -55,30 +58,42 @@ curl "http://localhost:3001/api/products?status=Active"
 # Search by name
 curl "http://localhost:3001/api/products?search=shirt"
 
-# Combine filters
-curl "http://localhost:3001/api/products?category=Clothing&status=Active"
+# Sort by price
+curl "http://localhost:3001/api/products?sort=asc"
+
+# Pagination
+curl "http://localhost:3001/api/products?page=1&limit=12"
 ```
 
 **Response:**
 ```json
-[
-  {
-    "id": 1,
-    "name": "Classic White T-Shirt",
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
-    "categoryId": 1,
-    "description": "A comfortable everyday t-shirt made from 100% cotton.",
-    "price": "499",
-    "stock": 50,
-    "status": "Active",
-    "createdAt": "2025-01-15T00:00:00Z",
-    "category": {
+{
+  "data": [
+    {
       "id": 1,
-      "name": "Clothing",
-      "description": "Apparel and garments"
+      "name": "Classic White T-Shirt",
+      "image": "https://pixabay.com/get/...",
+      "categoryId": 1,
+      "description": "A comfortable everyday t-shirt made from 100% cotton.",
+      "price": "499",
+      "stock": 50,
+      "lowStockThreshold": 5,
+      "status": "Active",
+      "createdAt": "2025-01-15T00:00:00Z",
+      "category": {
+        "id": 1,
+        "name": "Clothing",
+        "description": "Apparel and garments"
+      }
     }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 12,
+    "totalItems": 43,
+    "totalPages": 4
   }
-]
+}
 ```
 
 ---
@@ -105,6 +120,9 @@ curl http://localhost:3001/api/products/1
 POST /api/products
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **Request Body:**
 ```json
 {
@@ -123,6 +141,7 @@ POST /api/products
 ```bash
 curl -X POST http://localhost:3001/api/products \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
   -d '{
     "name": "New Product",
     "image": "https://via.placeholder.com/400",
@@ -144,6 +163,9 @@ curl -X POST http://localhost:3001/api/products \
 PUT /api/products/:id
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **Request Body:** Same as create (all fields optional)
 
 **curl:**
@@ -151,6 +173,7 @@ PUT /api/products/:id
 ```bash
 curl -X PUT http://localhost:3001/api/products/1 \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
   -d '{
     "price": 599,
     "stock": 25
@@ -167,10 +190,14 @@ curl -X PUT http://localhost:3001/api/products/1 \
 DELETE /api/products/:id
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
-curl -X DELETE http://localhost:3001/api/products/1
+curl -X DELETE http://localhost:3001/api/products/1 \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 **Response:** `{ "message": "Product deleted" }`
@@ -214,11 +241,15 @@ curl http://localhost:3001/api/categories
 POST /api/categories
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
 curl -X POST http://localhost:3001/api/categories \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
   -d '{
     "name": "New Category",
     "description": "Category description"
@@ -233,11 +264,15 @@ curl -X POST http://localhost:3001/api/categories \
 PUT /api/categories/:id
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
 curl -X PUT http://localhost:3001/api/categories/1 \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
   -d '{
     "name": "Updated Name",
     "description": "Updated description"
@@ -252,10 +287,14 @@ curl -X PUT http://localhost:3001/api/categories/1 \
 DELETE /api/categories/:id
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
-curl -X DELETE http://localhost:3001/api/categories/1
+curl -X DELETE http://localhost:3001/api/categories/1 \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 **Error (if products exist):**
@@ -275,21 +314,29 @@ curl -X DELETE http://localhost:3001/api/categories/1
 GET /api/orders
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **Query Parameters:**
 - `status` (string) — Filter by status
 - `search` (string) — Search by order ID or customer name
+- `page` (number) — Page number
+- `limit` (number) — Items per page
 
 **curl:**
 
 ```bash
 # Get all orders
-curl http://localhost:3001/api/orders
+curl http://localhost:3001/api/orders \
+  -H "Authorization: Bearer <admin_token>"
 
 # Filter by status
-curl "http://localhost:3001/api/orders?status=Pending"
+curl "http://localhost:3001/api/orders?status=Pending" \
+  -H "Authorization: Bearer <admin_token>"
 
-# Search
-curl "http://localhost:3001/api/orders?search=Juan"
+# Pagination
+curl "http://localhost:3001/api/orders?page=1&limit=10" \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 ---
@@ -300,10 +347,14 @@ curl "http://localhost:3001/api/orders?search=Juan"
 GET /api/orders/:id
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
-curl http://localhost:3001/api/orders/ORD-001
+curl http://localhost:3001/api/orders/ORD-001 \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 **Response:** Order object with items array
@@ -315,6 +366,9 @@ curl http://localhost:3001/api/orders/ORD-001
 ```
 POST /api/orders
 ```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
 
 **Request Body:**
 ```json
@@ -334,7 +388,8 @@ POST /api/orders
   "subtotal": 998,
   "total": 998,
   "paymentMethod": "Cash on Delivery",
-  "notes": "Leave at the door"
+  "notes": "Leave at the door",
+  "discountCode": "WELCOME10"
 }
 ```
 
@@ -343,6 +398,7 @@ POST /api/orders
 ```bash
 curl -X POST http://localhost:3001/api/orders \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <customer_token>" \
   -d '{
     "customerName": "Juan Dela Cruz",
     "email": "juan@email.com",
@@ -371,6 +427,9 @@ curl -X POST http://localhost:3001/api/orders \
 PUT /api/orders/:id/status
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **Valid Statuses:** `Pending`, `Confirmed`, `Preparing`, `Shipped`, `Completed`, `Cancelled`
 
 **curl:**
@@ -378,6 +437,7 @@ PUT /api/orders/:id/status
 ```bash
 curl -X PUT http://localhost:3001/api/orders/ORD-001/status \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
   -d '{ "status": "Confirmed" }'
 ```
 
@@ -391,10 +451,14 @@ curl -X PUT http://localhost:3001/api/orders/ORD-001/status \
 GET /api/customers
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
-curl http://localhost:3001/api/customers
+curl http://localhost:3001/api/customers \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 **Response:**
@@ -413,7 +477,415 @@ curl http://localhost:3001/api/customers
 
 ---
 
-## Authentication
+## Customer Authentication
+
+### Register Customer
+
+```
+POST /api/customers/register
+```
+
+**Request Body:**
+```json
+{
+  "name": "Juan Dela Cruz",
+  "email": "juan@email.com",
+  "password": "password123",
+  "phone": "09171234567"
+}
+```
+
+**curl:**
+
+```bash
+curl -X POST http://localhost:3001/api/customers/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Juan Dela Cruz",
+    "email": "juan@email.com",
+    "password": "password123",
+    "phone": "09171234567"
+  }'
+```
+
+**Response:**
+```json
+{
+  "message": "Registration successful",
+  "customer": {
+    "id": 1,
+    "name": "Juan Dela Cruz",
+    "email": "juan@email.com"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+---
+
+### Login Customer
+
+```
+POST /api/customers/login
+```
+
+**Request Body:**
+```json
+{
+  "email": "juan@email.com",
+  "password": "password123"
+}
+```
+
+**curl:**
+
+```bash
+curl -X POST http://localhost:3001/api/customers/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "juan@email.com",
+    "password": "password123"
+  }'
+```
+
+**Response:**
+```json
+{
+  "message": "Login successful",
+  "customer": {
+    "id": 1,
+    "name": "Juan Dela Cruz",
+    "email": "juan@email.com"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+---
+
+### Get Customer Profile
+
+```
+GET /api/customers/profile
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/customers/profile \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+### Update Customer Profile
+
+```
+PUT /api/customers/profile
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl -X PUT http://localhost:3001/api/customers/profile \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <customer_token>" \
+  -d '{
+    "name": "Updated Name",
+    "phone": "09181234567"
+  }'
+```
+
+---
+
+## Customer Orders
+
+### Get Customer Orders
+
+```
+GET /api/customer/orders
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**Query Parameters:**
+- `page` (number) — Page number
+- `limit` (number) — Items per page
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/customer/orders \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+### Get Customer Order Detail
+
+```
+GET /api/customer/orders/:id
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/customer/orders/ORD-001 \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+### Cancel Customer Order
+
+```
+PUT /api/customer/orders/:id/cancel
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl -X PUT http://localhost:3001/api/customer/orders/ORD-001/cancel \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+## Wishlist
+
+### Get Wishlist
+
+```
+GET /api/wishlist
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/wishlist \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+### Add to Wishlist
+
+```
+POST /api/wishlist
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**Request Body:**
+```json
+{
+  "productId": 1
+}
+```
+
+**curl:**
+
+```bash
+curl -X POST http://localhost:3001/api/wishlist \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <customer_token>" \
+  -d '{"productId": 1}'
+```
+
+---
+
+### Remove from Wishlist
+
+```
+DELETE /api/wishlist/:productId
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl -X DELETE http://localhost:3001/api/wishlist/1 \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+### Clear Wishlist
+
+```
+DELETE /api/wishlist
+```
+
+**Headers:**
+- `Authorization: Bearer <customer_token>`
+
+**curl:**
+
+```bash
+curl -X DELETE http://localhost:3001/api/wishlist \
+  -H "Authorization: Bearer <customer_token>"
+```
+
+---
+
+## Discounts
+
+### Get All Discounts
+
+```
+GET /api/discounts
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/discounts \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+### Create Discount
+
+```
+POST /api/discounts
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**Request Body:**
+```json
+{
+  "code": "WELCOME10",
+  "type": "percentage",
+  "value": 10,
+  "minOrder": 500,
+  "maxUses": 100,
+  "isActive": true
+}
+```
+
+**curl:**
+
+```bash
+curl -X POST http://localhost:3001/api/discounts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
+  -d '{
+    "code": "WELCOME10",
+    "type": "percentage",
+    "value": 10,
+    "minOrder": 500,
+    "maxUses": 100,
+    "isActive": true
+  }'
+```
+
+---
+
+### Update Discount
+
+```
+PUT /api/discounts/:id
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl -X PUT http://localhost:3001/api/discounts/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <admin_token>" \
+  -d '{
+    "value": 15,
+    "isActive": false
+  }'
+```
+
+---
+
+### Delete Discount
+
+```
+DELETE /api/discounts/:id
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl -X DELETE http://localhost:3001/api/discounts/1 \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+### Validate Discount Code
+
+```
+POST /api/discounts/validate
+```
+
+**Request Body:**
+```json
+{
+  "code": "WELCOME10",
+  "orderTotal": 1000
+}
+```
+
+**curl:**
+
+```bash
+curl -X POST http://localhost:3001/api/discounts/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "WELCOME10",
+    "orderTotal": 1000
+  }'
+```
+
+**Response:**
+```json
+{
+  "discountId": 1,
+  "discountCode": "WELCOME10",
+  "discountAmount": 100,
+  "discountType": "percentage",
+  "remainingUses": 99
+}
+```
+
+---
+
+## Admin Authentication
 
 ### Login
 
@@ -446,8 +918,10 @@ curl -X POST http://localhost:3001/api/auth/login \
   "message": "Login successful",
   "user": {
     "id": 1,
-    "username": "admin"
-  }
+    "username": "admin",
+    "role": "admin"
+  },
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
@@ -468,22 +942,127 @@ curl -X POST http://localhost:3001/api/auth/login \
 GET /api/stats
 ```
 
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
 **curl:**
 
 ```bash
-curl http://localhost:3001/api/stats
+curl http://localhost:3001/api/stats \
+  -H "Authorization: Bearer <admin_token>"
 ```
 
 **Response:**
 ```json
 {
-  "totalProducts": 12,
-  "totalOrders": 5,
+  "totalProducts": 43,
+  "totalOrders": 7,
   "pendingOrders": 1,
   "completedOrders": 1,
-  "totalCustomers": 5,
-  "totalSales": 1797
+  "totalCustomers": 3,
+  "totalSales": 2012.64
 }
+```
+
+---
+
+## Analytics
+
+### Get Dashboard Analytics
+
+```
+GET /api/analytics/dashboard
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/analytics/dashboard \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+### Get Sales by Period
+
+```
+GET /api/analytics/sales
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**Query Parameters:**
+- `period` (string) — daily, weekly, monthly
+
+**curl:**
+
+```bash
+curl "http://localhost:3001/api/analytics/sales?period=monthly" \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+### Get Top Products
+
+```
+GET /api/analytics/top-products
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/analytics/top-products \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+### Get Revenue by Category
+
+```
+GET /api/analytics/revenue
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**curl:**
+
+```bash
+curl http://localhost:3001/api/analytics/revenue \
+  -H "Authorization: Bearer <admin_token>"
+```
+
+---
+
+## Export
+
+### Export Orders to CSV
+
+```
+GET /api/orders/export
+```
+
+**Headers:**
+- `Authorization: Bearer <admin_token>`
+
+**Query Parameters:**
+- `format` (string) — csv or json
+
+**curl:**
+
+```bash
+curl "http://localhost:3001/api/orders/export?format=csv" \
+  -H "Authorization: Bearer <admin_token>" \
+  -o orders.csv
 ```
 
 ---
@@ -504,6 +1083,7 @@ All endpoints may return errors in this format:
 - `400` — Bad request / Validation error
 - `401` — Unauthorized
 - `404` — Not found
+- `429` — Rate limit exceeded
 - `500` — Server error
 
 ---

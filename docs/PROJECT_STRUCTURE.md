@@ -16,31 +16,56 @@ cubetech-ecommerce/
 │   │   │   ├── categoryController.js
 │   │   │   ├── orderController.js
 │   │   │   ├── customerController.js
+│   │   │   ├── customerAuthController.js
+│   │   │   ├── customerOrderController.js
+│   │   │   ├── discountController.js
 │   │   │   ├── authController.js
-│   │   │   └── statsController.js
+│   │   │   ├── statsController.js
+│   │   │   └── analyticsController.js
 │   │   ├── services/                    # Business logic layer
 │   │   │   ├── productService.js
 │   │   │   ├── categoryService.js
 │   │   │   ├── orderService.js
 │   │   │   ├── customerService.js
+│   │   │   ├── customerAuthService.js
+│   │   │   ├── customerOrderService.js
+│   │   │   ├── discountService.js
 │   │   │   ├── authService.js
-│   │   │   └── statsService.js
+│   │   │   ├── statsService.js
+│   │   │   ├── analyticsService.js
+│   │   │   ├── emailService.js
+│   │   │   └── imageService.js
 │   │   ├── repositories/                # Data access layer (Prisma queries)
 │   │   │   ├── productRepository.js
 │   │   │   ├── categoryRepository.js
 │   │   │   ├── orderRepository.js
+│   │   │   ├── customerRepository.js
+│   │   │   ├── customerOrderRepository.js
+│   │   │   ├── discountRepository.js
+│   │   │   ├── orderStatusRepository.js
 │   │   │   └── adminRepository.js
 │   │   ├── middleware/                  # Express middleware
 │   │   │   ├── errorHandler.js          # Centralized error handling
-│   │   │   └── validateRequest.js       # Request validation
+│   │   │   ├── auth.js                  # Admin JWT authentication
+│   │   │   ├── customerAuth.js          # Customer JWT authentication
+│   │   │   ├── rateLimiter.js           # Rate limiting
+│   │   │   └── sanitize.js              # Input sanitization
+│   │   ├── utils/                       # Utility functions
+│   │   │   ├── customerJwt.js           # Customer JWT helpers
+│   │   │   ├── errorLogger.js           # Error logging
+│   │   │   └── orderFilters.js          # Order filter helpers
 │   │   └── routes/                      # Route definitions with DI
 │   │       ├── health.js                # Health check endpoint
 │   │       ├── products.js
 │   │       ├── categories.js
 │   │       ├── orders.js
 │   │       ├── customers.js
+│   │       ├── customerOrders.js
+│   │       ├── discounts.js
+│   │       ├── wishlist.js
 │   │       ├── auth.js
-│   │       └── stats.js
+│   │       ├── stats.js
+│   │       └── analytics.js
 │   ├── __tests__/                       # Test files
 │   │   ├── setup.js                     # Test setup (DB cleanup)
 │   │   └── routes/                      # Integration tests
@@ -49,25 +74,75 @@ cubetech-ecommerce/
 │   │       ├── orders.test.js
 │   │       ├── auth.test.js
 │   │       ├── customers.test.js
-│   │       └── stats.test.js
+│   │       ├── customerAuth.test.js
+│   │       ├── stats.test.js
+│   │       ├── discounts.test.js
+│   │       ├── wishlist.test.js
+│   │       ├── analytics.test.js
+│   │       ├── export.test.js
+│   │       └── bulk.test.js
+│   ├── uploads/                         # Uploaded files
 │   ├── jest.config.js                   # Jest configuration
 │   ├── package.json
-│   └── .env                             # DATABASE_URL, PORT
+│   └── .env                             # DATABASE_URL, PORT, JWT_SECRET, etc.
 │
 ├── client/                              # Frontend (React + Vite + Tailwind)
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── layout/                  # Navbar, Footer, AdminSidebar, AdminLayout
+│   │   │   │   ├── CustomerLayout.jsx
+│   │   │   │   ├── AdminLayout.jsx
+│   │   │   │   ├── AdminSidebar.jsx
+│   │   │   │   ├── Navbar.jsx
+│   │   │   │   └── Footer.jsx
 │   │   │   ├── ui/                      # Button, Modal, Badge, Toast, Spinner, etc.
-│   │   │   └── product/                 # ProductCard, ProductGrid, QuantitySelector
+│   │   │   │   ├── Button.jsx
+│   │   │   │   ├── Modal.jsx
+│   │   │   │   ├── Badge.jsx
+│   │   │   │   ├── StatusBadge.jsx
+│   │   │   │   ├── Toast.jsx
+│   │   │   │   ├── Spinner.jsx
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   ├── SearchBar.jsx
+│   │   │   │   ├── ConfirmDialog.jsx
+│   │   │   │   ├── Skeleton.jsx
+│   │   │   │   ├── Pagination.jsx
+│   │   │   │   ├── DatePicker.jsx
+│   │   │   │   └── ScrollToTop.jsx
+│   │   │   └── product/                 # Product-specific components
+│   │   │       ├── ProductCard.jsx
+│   │   │       ├── ProductGrid.jsx
+│   │   │       └── QuantitySelector.jsx
 │   │   ├── pages/
-│   │   │   ├── customer/                # Home, Products, ProductDetail, Cart, Checkout
-│   │   │   └── admin/                   # Login, Dashboard, ProductManagement, etc.
+│   │   │   ├── customer/                # Customer pages
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Products.jsx
+│   │   │   │   ├── ProductDetail.jsx
+│   │   │   │   ├── Cart.jsx
+│   │   │   │   ├── Checkout.jsx
+│   │   │   │   ├── OrderConfirmation.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── Register.jsx
+│   │   │   │   ├── Profile.jsx
+│   │   │   │   ├── Wishlist.jsx
+│   │   │   │   ├── Orders.jsx
+│   │   │   │   └── OrderDetail.jsx
+│   │   │   └── admin/                   # Admin pages
+│   │   │       ├── Login.jsx
+│   │   │       ├── Dashboard.jsx
+│   │   │       ├── ProductManagement.jsx
+│   │   │       ├── CategoryManagement.jsx
+│   │   │       ├── OrderManagement.jsx
+│   │   │       ├── OrderDetail.jsx
+│   │   │       ├── CustomerManagement.jsx
+│   │   │       └── DiscountManagement.jsx
 │   │   ├── context/
 │   │   │   ├── DataContext.jsx          # API-backed state management
 │   │   │   ├── CartContext.jsx          # localStorage-backed cart
-│   │   │   └── AuthContext.jsx          # API-backed authentication
+│   │   │   ├── AuthContext.jsx          # API-backed admin authentication
+│   │   │   ├── CustomerAuthContext.jsx  # API-backed customer authentication
+│   │   │   └── ThemeContext.jsx         # Dark mode toggle
 │   │   ├── services/
 │   │   │   └── api.js                   # API helper functions (fetch wrapper)
 │   │   ├── hooks/
@@ -86,20 +161,25 @@ cubetech-ecommerce/
 │   ├── vite.config.js
 │   └── tailwind.config.js
 │
-├── bruno/                               # API testing collection
-│   └── cubetech-api/
-│       ├── bruno.json
-│       ├── environments/
-│       │   └── local.bru
-│       ├── Products/
-│       ├── Categories/
-│       ├── Orders/
-│       ├── Auth/
-│       ├── Customers/
-│       ├── Stats/
-│       └── Health/
+├── screenshots/                         # Desktop and mobile screenshots
+│   ├── desktop/
+│   │   ├── home-page.png
+│   │   ├── product-listing.png
+│   │   ├── product-detail.png
+│   │   ├── shopping-cart.png
+│   │   ├── checkout.png
+│   │   ├── admin-dashboard.png
+│   │   ├── admin-products.png
+│   │   └── admin-orders.png
+│   └── mobile/
+│       ├── home-page.png
+│       ├── product-listing.png
+│       ├── product-detail.png
+│       ├── shopping-cart.png
+│       ├── admin-dashboard.png
+│       └── admin-orders.png
 │
-├── docs/
+├── docs/                                # Documentation
 │   ├── ARCHITECTURE.md                  # System architecture and data flow
 │   ├── PROJECT_STRUCTURE.md             # File organization (this file)
 │   ├── DATA_MODEL.md                    # Database schema documentation
@@ -132,7 +212,10 @@ cubetech-ecommerce/
   - Each repository handles one database table
 - `src/middleware/` — Express middleware
   - `errorHandler.js` — Centralized error handling
-  - `validateRequest.js` — Request validation
+  - `auth.js` — Admin JWT authentication
+  - `customerAuth.js` — Customer JWT authentication
+  - `rateLimiter.js` — Rate limiting (100 req/15min API, 5 req/15min auth)
+  - `sanitize.js` — Input sanitization (XSS prevention)
 - `src/routes/` — Route definitions with dependency injection
   - Imports repository, service, and controller
   - Creates instances with DI (repository → service → controller)
@@ -153,6 +236,8 @@ cubetech-ecommerce/
   - `DataContext` — API-backed CRUD for products, categories, orders, customers
   - `CartContext` — localStorage-backed shopping cart
   - `AuthContext` — API-backed admin authentication
+  - `CustomerAuthContext` — API-backed customer authentication
+  - `ThemeContext` — Dark mode toggle
 - `services/` — API helper functions
   - `api.js` — Fetch wrapper for all backend API calls
 - `hooks/` — Reusable logic extracted from components
@@ -165,14 +250,13 @@ cubetech-ecommerce/
   - `validators` — Form validation functions
   - `formatters` — Display formatting functions
 
-### bruno/ — API Testing
+### screenshots/ — Documentation
 
-- Bruno collection for testing API endpoints
-- Environment variables for different environments (local, production)
-- Version controlled — can be imported by team members
+- Desktop and mobile screenshots for README
+- Used to showcase the application in the assessment
 
 ### docs/ — Documentation
 
 - Architecture, data model, API reference
 - Project structure, roadmap
-- Local-only docs (gitignored): git rules, coding standards, interview guide
+- Local-only docs (not tracked): git rules, coding standards, interview guide
