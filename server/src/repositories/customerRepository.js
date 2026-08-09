@@ -28,6 +28,11 @@ class CustomerRepository {
       orderBy: { createdAt: 'desc' }
     });
   }
+
+  // Count all customers
+  async count() {
+    return prisma.customer.count();
+  }
 }
 
 module.exports = new CustomerRepository();

@@ -1,9 +1,10 @@
 // StatsService: aggregates data for dashboard statistics
-// Receives product and order repositories via constructor injection (DI pattern)
+// Receives product, order, and customer repositories via constructor injection (DI pattern)
 class StatsService {
-  constructor(productRepository, orderRepository) {
+  constructor(productRepository, orderRepository, customerRepository) {
     this.productRepository = productRepository;
     this.orderRepository = orderRepository;
+    this.customerRepository = customerRepository;
   }
 
   // Calculate dashboard statistics
@@ -17,9 +18,8 @@ class StatsService {
     const pendingOrders = orders.filter(o => o.status === 'Pending').length;
     const completedOrders = orders.filter(o => o.status === 'Completed').length;
 
-    // Count unique customers by email
-    const uniqueEmails = new Set(orders.map(o => o.email));
-    const totalCustomers = uniqueEmails.size;
+    // Count customers from Customer table
+    const totalCustomers = await this.customerRepository.count();
 
     // Sum total sales from completed orders
     const totalSales = orders

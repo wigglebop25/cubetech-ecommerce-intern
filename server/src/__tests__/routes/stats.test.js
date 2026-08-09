@@ -17,6 +17,14 @@ describe('Stats Routes', () => {
       data: { name: 'T-Shirt', image: 'img.jpg', categoryId: category.id, price: 500, stock: 50 }
     });
 
+    // Create customers in the Customer table
+    await prisma.customer.create({
+      data: { name: 'Juan', email: 'juan@test.com', password: 'hashedpassword', phone: '09171234567' }
+    });
+    await prisma.customer.create({
+      data: { name: 'Maria', email: 'maria@test.com', password: 'hashedpassword', phone: '09181234567' }
+    });
+
     await prisma.order.create({
       data: {
         id: 'ORD-001',
