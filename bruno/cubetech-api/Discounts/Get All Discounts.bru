@@ -1,0 +1,15 @@
+meta {
+  name: Get All Discounts
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/discounts
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}

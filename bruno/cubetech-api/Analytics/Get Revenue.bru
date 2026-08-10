@@ -1,0 +1,15 @@
+meta {
+  name: Get Revenue by Category
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/analytics/revenue
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}

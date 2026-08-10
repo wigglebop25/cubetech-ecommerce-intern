@@ -1,0 +1,15 @@
+meta {
+  name: Delete Discount
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/discounts/1
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}

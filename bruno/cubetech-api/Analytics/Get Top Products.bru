@@ -1,0 +1,15 @@
+meta {
+  name: Get Top Products
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/analytics/top-products
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}

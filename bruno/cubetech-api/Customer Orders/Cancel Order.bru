@@ -1,0 +1,15 @@
+meta {
+  name: Cancel Customer Order
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/customer/orders/ORD-001/cancel
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{customerToken}}
+}

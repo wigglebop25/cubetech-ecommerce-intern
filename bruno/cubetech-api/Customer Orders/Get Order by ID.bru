@@ -1,0 +1,15 @@
+meta {
+  name: Get Customer Order by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/customer/orders/ORD-001
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{customerToken}}
+}

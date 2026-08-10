@@ -1,0 +1,21 @@
+meta {
+  name: Update Customer Profile
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/customers/profile
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{customerToken}}
+}
+
+body:json {
+  "name": "Updated Name",
+  "phone": "09181234567"
+}

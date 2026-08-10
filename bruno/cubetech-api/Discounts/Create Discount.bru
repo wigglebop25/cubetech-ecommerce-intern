@@ -1,0 +1,25 @@
+meta {
+  name: Create Discount
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/discounts
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  "code": "NEWCODE",
+  "type": "percentage",
+  "value": 15,
+  "minOrder": 300,
+  "maxUses": 50,
+  "isActive": true
+}
